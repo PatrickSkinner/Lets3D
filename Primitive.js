@@ -12,6 +12,7 @@ class Primitive{
 
     vertices;
     indices;
+    normals;
 
     constructor(height, width, depth){
         this.height = height;
@@ -25,72 +26,104 @@ class Primitive{
 
 }
 
+class Plane extends Primitive{
+    constructor(width, height){
+        super(width, height, 0.0);
+
+        // TODO: Make double sided
+        super.vertices = new Float32Array([
+            width, height, 0.0,
+            -width, height, 0.0,
+            -width, -height, 0.0,
+            width, -height, 0.0,
+            /*
+            width, height, 0.0,
+            -width, height, 0.0,
+            -width, -height, 0.0,
+            width, -height, 0.0,
+            */
+        ]);
+        
+        super.indices = new Uint8Array([
+            0, 1, 2,
+            1, 2, 3,
+            /*
+            4, 5, 6,
+            5, 6, 7
+            */
+        ]);
+    }
+}
+
 class Cube extends Primitive{
 
-    /** Single parameter constructor, sets all dimensions equally.
-     * @param scale value to set all width, height and depth to.
+    /**
+     * Cube constructor
+     * @param width along the X axis
+     * @param height along the Y axis
+     * @param depth along the Z axis
      */
-    constructor(scale){
+     constructor(width, height, depth){
 
-        super( scale, scale, scale );
+        super(width, height, depth);
         
         super.vertices = new Float32Array([
             // Top
-            -1.0, 1.0, 1.0,
-            1.0, 1.0, 1.0,
-            -1.0, 1.0, -1.0,
-            1.0, 1.0, -1.0,
+            -width, height, depth,
+            width, height, depth,
+            -width, height, -depth,
+            width, height, -depth,
 
             // Bottom
-            -1.0, -1.0, 1.0,
-            1.0, -1.0, 1.0,
-            -1.0, -1.0, -1.0,
-            1.0, -1.0, -1.0,
+            -width, -height, depth,
+            width, -height, depth,
+            -width, -height, -depth,
+            width, -height, -depth,
 
             // Front
-            1.0, 1.0, -1.0,
-            -1.0, 1.0, -1.0,
-            -1.0, -1.0, -1.0,
-            1.0, -1.0, -1.0,
+            width, height, -depth,
+            -width, height, -depth,
+            -width, -height, -depth,
+            width, -height, -depth,
 
             // Back
-            -1.0, 1.0, 1.0,
-            1.0, 1.0, 1.0,
-            -1.0, -1.0, 1.0,
-            1.0, -1.0, 1.0,
+            -width, height, depth,
+            width, height, depth,
+            -width, -height, depth,
+            width, -height, depth,
 
             // Left
-            -1.0, 1.0, -1.0,
-            -1.0, 1.0, 1.0,
-            -1.0, -1.0, -1.0,
-            -1.0, -1.0, 1.0,
+            -width, height, -depth,
+            -width, height, depth,
+            -width, -height, -depth,
+            -width, -height, depth,
 
             // Right
-            1.0, 1.0, -1.0,
-            1.0, 1.0, 1.0,
-            1.0, -1.0, -1.0,
-            1.0, -1.0, 1.0,
+            width, height, -depth,
+            width, height, depth,
+            width, -height, -depth,
+            width, -height, depth,
             
         ]);
 
         super.indices = new Uint8Array([
-            0, 1, 2, // Top
-            1, 2, 3,
-
-            4, 5, 6, // Bottom
-            5, 6, 7,
-
-            8, 9, 10, // Front
-            9, 10, 11,
+            0, 1, 2,        1, 2, 3, // Top
+            4, 5, 6,        5, 6, 7, // Bottom
+            8, 9, 10,       9, 10, 11, // Front
+            12, 13, 14,     13, 14, 15,// Back
+            16, 17, 18,     17, 18, 19,// Left
+            20, 21, 22,     21, 22, 23 // Right
             
-            12, 13, 14, // Back
-            13, 14, 15,
+        ]);
 
-            16, 17, 18, // Left
-            17, 18, 19,
+        super.normals = new Float32Array([
+            0.0, 1.0, 0.0,   0.0, 1.0, 0.0,   0.0, 1.0, 0.0,   0.0, 1.0, 0.0,   // Top
+            0.0,-1.0, 0.0,   0.0,-1.0, 0.0,   0.0,-1.0, 0.0,   0.0,-1.0, 0.0,   // Bottom
+            0.0, 0.0, 1.0,   0.0, 0.0, 1.0,   0.0, 0.0, 1.0,   0.0, 0.0, 1.0,   // Front
+            0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   // Back
+            -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  // Left
+            1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   // Right
 
-            20, 21, 22, // Right
-            21, 22, 23
         ]);
   
     }
