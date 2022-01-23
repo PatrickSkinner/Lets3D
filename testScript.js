@@ -42,67 +42,10 @@ function main(){
         return;
     }
 
-    let cube = new Cube(1, 1, 1);
+    let scene = new Scene();
+    var c = new Cube(1, 1, 1);
+    var mesh = new MeshObject( c, 0);
+    scene.add( mesh  );
 
-    var n = initVertexBuffers(gl, cube);
-    if (n < 0){
-        console.log("Failed to set vertex position");
-        return;
-    }
-
-    // Set the eye point and the viewing volume
-    var mvpMatrix = new Matrix4();
-    mvpMatrix.setPerspective(30, 1, 1, 100);
-    mvpMatrix.lookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
-    var u_ViewMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
-    gl.uniformMatrix4fv(u_ViewMatrix, false, mvpMatrix.elements);
-
-    var u_LightColor = gl.getUniformLocation(gl.program, 'u_LightColor');
-    var u_LightDirection = gl.getUniformLocation(gl.program, 'u_LightDirection');
-    var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
-
-    gl.uniform3f(u_LightColor, 1.0, 1.0, 1.0); // Set light color to white
-    var lightDirection = new Vector3([0.5,3.0,4.0]);
-    lightDirection.normalize();
-    gl.uniform3fv(u_LightDirection, lightDirection.elements);
-    gl.uniform3f(u_AmbientLight, 0.2, 0.2, 0.2);
-
-    gl.clearColor(0,0,0,1);
-    gl.enable(gl.DEPTH_TEST);
-
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_BYTE, 0);
-}
-
-function initVertexBuffers(gl, geometryPrimitive){
-
-    var vertices = geometryPrimitive.vertices;
-    var indices = geometryPrimitive.indices;
-    var normals = geometryPrimitive.normals;
-
-    // Placeholder color insertion
-    var colors = new Float32Array([     // Colors
-       0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  // blue
-       0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  // blue
-       0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  // green
-       0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  // green
-       1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
-       1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
-    ]);
-
-    var indexBuffer = gl.createBuffer();
-    if( !indexBuffer){
-        console.log("Failed to create buffer object");
-        return -1;
-    }
-
-    initArrayBuffer(gl, vertices, 3, gl.FLOAT, 'a_Position');
-    initArrayBuffer(gl, colors, 3, gl.FLOAT, 'a_Color');
-    initArrayBuffer(gl, normals, 3, gl.FLOAT, 'a_Normal');
-
-    //Write the indices to buffer
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-
-    return indices.length;
+    scene.objectList[0].draw(gl);
 }

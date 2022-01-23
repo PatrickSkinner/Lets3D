@@ -2,14 +2,17 @@
  * Base class for geometry primitives.
  */
 class Primitive{
+    // Parameters
     width;
     height;
     depth;
 
+    //Origin Point
     originX;
     originY;
     originZ;
 
+    // Buffers
     vertices;
     indices;
     normals;
@@ -103,7 +106,6 @@ class Cube extends Primitive{
             width, height, depth,
             width, -height, -depth,
             width, -height, depth,
-            
         ]);
 
         super.indices = new Uint8Array([
@@ -113,7 +115,6 @@ class Cube extends Primitive{
             12, 13, 14,     13, 14, 15,// Back
             16, 17, 18,     17, 18, 19,// Left
             20, 21, 22,     21, 22, 23 // Right
-            
         ]);
 
         super.normals = new Float32Array([
@@ -123,7 +124,6 @@ class Cube extends Primitive{
             0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   // Back
             -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  // Left
             1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   // Right
-
         ]);
   
     }

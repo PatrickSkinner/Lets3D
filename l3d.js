@@ -1,7 +1,7 @@
 /**
- * @param {*} gl WebGL context
- * @param {*} vShader Vertex shader program passed as a string
- * @param {*} fShader Fragment shader program passed as a string
+ * @param gl WebGL context
+ * @param vShader Vertex shader program passed as a string
+ * @param fShader Fragment shader program passed as a string
  * @returns 
  */
 function initShaders(gl, vShader, fShader){
@@ -21,9 +21,9 @@ function initShaders(gl, vShader, fShader){
 }
 
 /**
- * @param {*} gl WebGL context
- * @param {*} vertexShader Compiled vertex shader object
- * @param {*} fragmentShader Compiled fragment shader object
+ * @param gl WebGL context
+ * @param vertexShader Compiled vertex shader object
+ * @param fragmentShader Compiled fragment shader object
  * @returns returns program, or null object on failure
  */
 function createProgram(gl, vertexShader, fragmentShader) {
@@ -48,9 +48,9 @@ function createProgram(gl, vertexShader, fragmentShader) {
 }
 
 /**
- * @param {*} gl WebGL context
- * @param {*} type Type of shader to be compiled
- * @param {*} source Shader program passed as a string
+ * @param gl WebGL context
+ * @param type Type of shader to be compiled
+ * @param source Shader program passed as a string
  * @returns return shader object, or null object on failure
  */
 function createShader(gl, type, source){
@@ -109,4 +109,43 @@ function initArrayBuffer(gl, data, num, type, attribute) {
     gl.enableVertexAttribArray(a_attribute);
 
     return true; // Success
+}
+
+/**
+ * Create vertex buffers for a given primitive.
+ * @param {*} gl 
+ * @param {*} geometryPrimitive 
+ * @returns 
+ */
+ function initVertexBuffers(gl, geometryPrimitive){
+
+    var vertices = geometryPrimitive.vertices;
+    var indices = geometryPrimitive.indices;
+    var normals = geometryPrimitive.normals;
+
+    // Placeholder color insertion
+    var colors = new Float32Array([     // Colors
+       0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  // blue
+       0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  // blue
+       0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  // green
+       0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  // green
+       1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
+       1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
+    ]);
+
+    var indexBuffer = gl.createBuffer();
+    if( !indexBuffer){
+        console.log("Failed to create buffer object");
+        return -1;
+    }
+
+    initArrayBuffer(gl, vertices, 3, gl.FLOAT, 'a_Position');
+    initArrayBuffer(gl, colors, 3, gl.FLOAT, 'a_Color');
+    initArrayBuffer(gl, normals, 3, gl.FLOAT, 'a_Normal');
+
+    //Write the indices to buffer
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+
+    return indices.length;
 }
