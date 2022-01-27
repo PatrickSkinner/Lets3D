@@ -1,9 +1,10 @@
 // Combination of Mesh and Material
-class MeshObject{
+class MeshObject extends Object{
     geometry;
     material;
 
     constructor( geom, mat ){
+        super();
         this.geometry = geom;
         this.material = mat;
     }
@@ -14,13 +15,6 @@ class MeshObject{
             console.log("Failed to set vertex position");
             return;
         }
-
-        // Set the eye point and the viewing volume
-        var mvpMatrix = new Matrix4();
-        mvpMatrix.setPerspective(30, 1, 1, 100);
-        mvpMatrix.lookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
-        var u_ViewMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
-        gl.uniformMatrix4fv(u_ViewMatrix, false, mvpMatrix.elements);
 
         var u_LightColor = gl.getUniformLocation(gl.program, 'u_LightColor');
         var u_LightDirection = gl.getUniformLocation(gl.program, 'u_LightDirection');

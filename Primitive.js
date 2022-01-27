@@ -59,7 +59,6 @@ class Plane extends Primitive{
 }
 
 class Cube extends Primitive{
-
     /**
      * Cube constructor
      * @param width along the X axis

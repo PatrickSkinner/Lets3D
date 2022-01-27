@@ -43,9 +43,13 @@ function main(){
     }
 
     let scene = new Scene();
-    var c = new Cube(1, 1, 1);
-    var mesh = new MeshObject( c, 0);
-    scene.add( mesh  );
+    var cubeGeom = new Cube(1, 1, 1);
+    var cube = new MeshObject(cubeGeom, 0);
+    scene.add(cube);
+
+    let camera = new Camera(30, 1, 1, 100);
+    camera.transformLookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
+    camera.setActiveCamera(gl);
 
     scene.objectList[0].draw(gl);
 }
