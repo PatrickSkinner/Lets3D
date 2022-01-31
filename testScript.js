@@ -37,19 +37,18 @@ function main(){
         return;
     }
 
-    if( !initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE )){
-        console.log('Failed to init shaders.');
-        return;
-    }
-
     let scene = new Scene();
     var cubeGeom = new Cube(1, 1, 1);
-    var cube = new MeshObject(cubeGeom, 0);
+    var cubeMat = new Material();
+    cubeMat.fragmentShader = FSHADER_SOURCE;
+    cubeMat.vertexShader = VSHADER_SOURCE;
+
+    var cube = new MeshObject(cubeGeom, cubeMat);
     scene.add(cube);
 
     let camera = new Camera(30, 1, 1, 100);
     camera.transformLookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
-    camera.setActiveCamera(gl);
+    scene.setActiveCamera( camera );
 
-    scene.objectList[0].draw(gl);
+    scene.renderScene(gl);
 }

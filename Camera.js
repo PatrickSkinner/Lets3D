@@ -11,11 +11,6 @@ class Camera extends Object{
         this.mvpMatrix = this.projectionMatrix;
     }
 
-    setActiveCamera(gl){
-        var cameraMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
-        gl.uniformMatrix4fv(cameraMatrix, false, this.mvpMatrix.elements);
-    }
-
     transformLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ){
         super.transformLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         this.mvpMatrix = this.projectionMatrix;

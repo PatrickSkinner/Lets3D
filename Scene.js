@@ -1,8 +1,6 @@
 class Scene{
 
-    activeCamera;
-
-    // Placeholder. List of objects in the scene. To be replaced with a proper scenegraph.
+    activeCamera; 
     objectList;
 
     constructor(){
@@ -16,4 +14,13 @@ class Scene{
     setActiveCamera(cam){
         this.activeCamera = cam;
     }
+
+    renderScene( gl ){
+        this.objectList.forEach(element => {
+            if(element instanceof MeshObject){
+                element.draw(gl, this.activeCamera)
+            }
+        });
+    }
+    
 }
