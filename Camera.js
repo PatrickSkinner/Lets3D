@@ -11,6 +11,7 @@ class Camera extends Object{
         this.mvpMatrix = this.projectionMatrix;
     }
 
+    // TODO: Directly use object transform for matrix calculations.
     transformLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ){
         super.transformLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         this.mvpMatrix = this.projectionMatrix;
