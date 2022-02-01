@@ -16,6 +16,10 @@ class Object{
         this.transform.lookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
+    /**
+     * Create a parent-child relationship with a given object. If the object already has a parent that relationship will be overwritten.
+     * @param child Object to be set as child.
+     */
     addChild(child){
         var alreadyAdded = false;
         this.children.forEach(element => {
@@ -35,6 +39,10 @@ class Object{
         }
     }
     
+    /**
+     * Remove a parent-child relationship from this object.
+     * @param child Child to be removed.
+     */
     removeChild(child){      
         const index = this.children.indexOf(child);
         if (index > -1) {

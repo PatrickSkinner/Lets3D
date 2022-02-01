@@ -9,6 +9,11 @@ class MeshObject extends Object{
         this.material = mat;
     }
 
+    /**
+     * Call initShaders() using the fragment and vertex shaders of the material assigned to this mesh
+     * @param gl WebGL context
+     * @returns 
+     */
     initializeShaders(gl){
         if( !initShaders(gl, this.material.vertexShader, this.material.fragmentShader )){
             console.log('Failed to init shaders.');
@@ -16,6 +21,12 @@ class MeshObject extends Object{
         }
     }
 
+    /**
+     * Render this object from the perspective of a given camera.
+     * @param gl WebGL context
+     * @param camera Camera to render with
+     * @returns 
+     */
     draw(gl, camera){
         this.initializeShaders(gl);
 
