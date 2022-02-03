@@ -1,8 +1,24 @@
 class Object{
     constructor(){
         this.transform = new Matrix4();
+        this.transform.setIdentity();
         this.parent = null;
         this.children = [];
+    }
+
+    translate(x, y, z){
+        var translationMat = new Matrix4();
+        translationMat.setIdentity();
+
+        translationMat.elements[12] = x;
+        translationMat.elements[13] = y;
+        translationMat.elements[14] = z;
+
+        this.transform.multiply(translationMat);
+    }
+
+    rotate(angle, x, y, z){
+        this.transform.rotate(angle, x, y, z);
     }
 
     /**
