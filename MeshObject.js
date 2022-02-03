@@ -40,7 +40,7 @@ class MeshObject extends Object{
         var u_cameraMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
         var u_NormalMatrix = gl.getUniformLocation(gl.program, 'u_NormalMatrix');
         var u_LightColor = gl.getUniformLocation(gl.program, 'u_LightColor');
-        var u_LightDirection = gl.getUniformLocation(gl.program, 'u_LightDirection');
+        var u_LightPosition = gl.getUniformLocation(gl.program, 'u_LightPosition');
         var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
 
         var normalMatrix = new Matrix4();
@@ -54,9 +54,8 @@ class MeshObject extends Object{
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.transform.elements);
 
         gl.uniform3f(u_LightColor, 1.0, 1.0, 1.0); // Set light color to white
-        var lightDirection = new Vector3([2,3,-3.0]);
-        lightDirection.normalize();
-        gl.uniform3fv(u_LightDirection, lightDirection.elements);
+        var lightPosition = new Vector3([2,4,-3]);
+        gl.uniform3fv(u_LightPosition, lightPosition.elements);
         gl.uniform3f(u_AmbientLight, 0.2, 0.2, 0.2);
 
         gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_BYTE, 0);
