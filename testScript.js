@@ -70,5 +70,6 @@ function main(){
     camera.transformLookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
     scene.setActiveCamera( camera );
 
+    scene.setClearColor(0.25,0.25,0.25,1);
     scene.renderScene(gl);
 }
