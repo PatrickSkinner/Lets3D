@@ -83,8 +83,8 @@ class Cube extends Primitive{
             width, -height, -depth,
 
             // Front
-            width, height, -depth,
             -width, height, -depth,
+            width, height, -depth,
             -width, -height, -depth,
             width, -height, -depth,
 
