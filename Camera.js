@@ -1,4 +1,4 @@
-class Camera extends Object{
+class Camera extends Object3D{
     projectionMatrix;
     mvpMatrix;
 
@@ -17,4 +17,5 @@ class Camera extends Object{
         this.mvpMatrix = this.projectionMatrix;
         this.mvpMatrix.lookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
+
 }

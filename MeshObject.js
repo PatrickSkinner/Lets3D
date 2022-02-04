@@ -1,5 +1,5 @@
 // Combination of Mesh and Material
-class MeshObject extends Object{
+class MeshObject extends Object3D{
     geometry;
     material;
 
@@ -44,9 +44,11 @@ class MeshObject extends Object{
         var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
 
         var normalMatrix = new Matrix4();
+        var mvpMatrix = new Matrix4();
 
-        camera.mvpMatrix.multiply(this.transform);
-        gl.uniformMatrix4fv(u_cameraMatrix, false, camera.mvpMatrix.elements);
+        mvpMatrix.set(camera.mvpMatrix);
+        mvpMatrix.multiply(this.transform);
+        gl.uniformMatrix4fv(u_cameraMatrix, false, mvpMatrix.elements);
 
         normalMatrix.setInverseOf(this.transform);
         normalMatrix.transpose();

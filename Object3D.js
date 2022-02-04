@@ -1,4 +1,4 @@
-class Object{
+class Object3D{
     constructor(){
         this.transform = new Matrix4();
         this.transform.setIdentity();
