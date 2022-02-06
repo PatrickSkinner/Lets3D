@@ -56,10 +56,42 @@ class MeshObject extends Object3D{
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.transform.elements);
 
         gl.uniform3f(u_LightColor, 1.0, 1.0, 1.0); // Set light color to white
-        var lightPosition = new Vector3([2,4,-3]);
+        var lightPosition = new Vector3([4,4,-3]);
         gl.uniform3fv(u_LightPosition, lightPosition.elements);
         gl.uniform3f(u_AmbientLight, 0.2, 0.2, 0.2);
 
         gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_BYTE, 0);
+    }
+
+    drawNormals(gl, camera){
+        var VSHADER_SOURCE_NORMALS =
+            'attribute vec4 a_Position;\n' +
+            'uniform mat4 u_ViewMatrix;\n' +
+            'void main() {\n' +
+                'gl_Position = u_ViewMatrix * a_Position;\n'+
+            '}\n';
+
+        var FSHADER_SOURCE_NORMALS =
+            'precision mediump float;\n' +
+            'void main() {\n' +
+               ' gl_FragColor = vec4(1.0, 1.0, 1.0, 0.1);\n' +
+            '}\n';
+
+        initShaders(gl, VSHADER_SOURCE_NORMALS, FSHADER_SOURCE_NORMALS );
+
+        var n = initNormalHelpers(gl, this.geometry);
+        if (n < 0){
+            console.log("Failed to set vertex position");
+            return;
+        }
+
+        var u_cameraMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
+        var mvpMatrix = new Matrix4();
+
+        mvpMatrix.set(camera.mvpMatrix);
+        mvpMatrix.multiply(this.transform);
+        gl.uniformMatrix4fv(u_cameraMatrix, false, mvpMatrix.elements);
+
+        gl.drawArrays(gl.LINES, 0, n);
     }
 }

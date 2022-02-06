@@ -12,7 +12,10 @@ function initShaders(gl, vShader, fShader){
 
     // Create program from shaders
     var program = createProgram(gl, vertexShader, fragmentShader);
-    if(!program) return false;
+    if(!program){
+        console.log("Failed to create program from shaders");
+        return false;
+    }
 
     gl.useProgram(program);
     gl.program = program;
@@ -118,7 +121,6 @@ function initArrayBuffer(gl, data, num, type, attribute) {
  * @returns 
  */
  function initVertexBuffers(gl, geometryPrimitive){
-
     var vertices = geometryPrimitive.vertices;
     var indices = geometryPrimitive.indices;
     var normals = geometryPrimitive.normals;
@@ -148,4 +150,37 @@ function initArrayBuffer(gl, data, num, type, attribute) {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 
     return indices.length;
+}
+
+ function initNormalHelpers(gl, geometryPrimitive){
+
+    var verticesIn = geometryPrimitive.vertices;
+    var normals = geometryPrimitive.normals;
+    var vertices = new Float32Array(verticesIn.length*2);
+
+    let i = 0;
+    let j = 0;
+    while(j < verticesIn.length){
+        // Vertex x, y, z
+        vertices[i] = verticesIn[j];
+        vertices[i+1] = verticesIn[j+1];
+        vertices[i+2] = verticesIn[j+2];
+
+        // Vertex + Normal x, y, z
+        vertices[i+3] = verticesIn[j] + normals[j];
+        vertices[i+4] = verticesIn[j+1] + normals[j+1];
+        vertices[i+5] = verticesIn[j+2] + normals[j+2];
+
+        /*
+        console.log(vertices[i] +', '+ vertices[i+1] +', '+ vertices[i+2] +
+        '\t to \t' + vertices[i+3] +', '+ vertices[i+4] +', '+ vertices[i+5])
+        */
+
+        i = i + 6;
+        j = j + 3;
+    }
+
+    initArrayBuffer(gl, vertices, 3, gl.FLOAT, 'a_Position');
+
+    return vertices.length/3; // 3 numbers per point
 }

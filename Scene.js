@@ -3,10 +3,12 @@ class Scene{
     activeCamera; 
     objectList;
     cColor; // Color to clear screen to when clearColor() is called
+    showNormals;
 
     constructor(){
         this.objectList = [];
         this.cColor = [0,0,0,1];
+        this.showNormals = false;
     }
 
     /**
@@ -40,13 +42,14 @@ class Scene{
      * Iterate through the object list and draw each object.
      * @param gl Program
      */
-    renderScene( gl ){
+    renderScene(gl){
         gl.clearColor(this.cColor[0], this.cColor[1], this.cColor[2], this.cColor[3]);
         gl.enable(gl.DEPTH_TEST);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         this.objectList.forEach(element => {
             if(element instanceof MeshObject){
-                element.draw(gl, this.activeCamera)
+                element.draw(gl, this.activeCamera);
+                if(this.showNormals) element.drawNormals(gl, this.activeCamera);
             }
         });
     }
