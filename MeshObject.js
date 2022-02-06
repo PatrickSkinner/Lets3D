@@ -56,13 +56,19 @@ class MeshObject extends Object3D{
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.transform.elements);
 
         gl.uniform3f(u_LightColor, 1.0, 1.0, 1.0); // Set light color to white
-        var lightPosition = new Vector3([4,4,-3]);
+        var lightPosition = new Vector3([3,3,3]);
         gl.uniform3fv(u_LightPosition, lightPosition.elements);
         gl.uniform3f(u_AmbientLight, 0.2, 0.2, 0.2);
 
         gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_BYTE, 0);
     }
 
+    /**
+     * Draws lines representing the normal of each vertice
+     * @param {*} gl WebGL context
+     * @param {*} camera The camera to render with
+     * @returns 
+     */
     drawNormals(gl, camera){
         var VSHADER_SOURCE_NORMALS =
             'attribute vec4 a_Position;\n' +
@@ -74,14 +80,14 @@ class MeshObject extends Object3D{
         var FSHADER_SOURCE_NORMALS =
             'precision mediump float;\n' +
             'void main() {\n' +
-               ' gl_FragColor = vec4(1.0, 1.0, 1.0, 0.1);\n' +
+               ' gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);\n' +
             '}\n';
 
         initShaders(gl, VSHADER_SOURCE_NORMALS, FSHADER_SOURCE_NORMALS );
 
         var n = initNormalHelpers(gl, this.geometry);
         if (n < 0){
-            console.log("Failed to set vertex position");
+            console.log("Failed to set vertex position of normal helpers");
             return;
         }
 

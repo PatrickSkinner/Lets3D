@@ -115,9 +115,9 @@ function initArrayBuffer(gl, data, num, type, attribute) {
 }
 
 /**
- * Create vertex buffers for a given primitive.
- * @param {*} gl 
- * @param {*} geometryPrimitive 
+ * Create vertex buffers for a given primitive. Position/Color/Normal per vertex.
+ * @param gl WebGL context
+ * @param geometryPrimitive 3D geometry
  * @returns 
  */
  function initVertexBuffers(gl, geometryPrimitive){
@@ -152,14 +152,20 @@ function initArrayBuffer(gl, data, num, type, attribute) {
     return indices.length;
 }
 
+/**
+ * Creates a buffer containing vertex pairs that represent the normal of each of the geometries vertices
+ * @param gl The WebGL context
+ * @param geometryPrimitive The geometry we are visualising the normals of
+ * @returns 
+ */
  function initNormalHelpers(gl, geometryPrimitive){
 
     var verticesIn = geometryPrimitive.vertices;
     var normals = geometryPrimitive.normals;
-    var vertices = new Float32Array(verticesIn.length*2);
+    var vertices = new Float32Array(verticesIn.length*2); // Start and end points of the visualised normals
 
-    let i = 0;
-    let j = 0;
+    let i = 0; // Iterate through vertices
+    let j = 0; // Iterates through verticesIn
     while(j < verticesIn.length){
         // Vertex x, y, z
         vertices[i] = verticesIn[j];
@@ -171,16 +177,11 @@ function initArrayBuffer(gl, data, num, type, attribute) {
         vertices[i+4] = verticesIn[j+1] + normals[j+1];
         vertices[i+5] = verticesIn[j+2] + normals[j+2];
 
-        /*
-        console.log(vertices[i] +', '+ vertices[i+1] +', '+ vertices[i+2] +
-        '\t to \t' + vertices[i+3] +', '+ vertices[i+4] +', '+ vertices[i+5])
-        */
-
         i = i + 6;
         j = j + 3;
     }
 
     initArrayBuffer(gl, vertices, 3, gl.FLOAT, 'a_Position');
 
-    return vertices.length/3; // 3 numbers per point
+    return vertices.length/3; // return number of coordinates
 }
