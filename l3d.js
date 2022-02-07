@@ -91,7 +91,7 @@ function initArrayBuffer(gl, data, num, type, attribute) {
     var buffer = gl.createBuffer();
     if(!buffer){
         console.log('Failed to create buffer object.')
-        return false;
+        return null;
     }
 
     // Bind object to array buffer target
@@ -104,84 +104,12 @@ function initArrayBuffer(gl, data, num, type, attribute) {
     var a_attribute = gl.getAttribLocation(gl.program, attribute);
     if(a_attribute < 0){
         console.log('Failed retrieve storage position for attribute ' + attribute);
-        return false;
+        return null;
     }
 
     // Assign buffer to attribute variable and enable assignment
     gl.vertexAttribPointer(a_attribute, num, type, false, 0, 0);
     gl.enableVertexAttribArray(a_attribute);
 
-    return true; // Success
-}
-
-/**
- * Create vertex buffers for a given primitive. Position/Color/Normal per vertex.
- * @param gl WebGL context
- * @param geometryPrimitive 3D geometry
- * @returns 
- */
- function initVertexBuffers(gl, geometryPrimitive){
-    var vertices = geometryPrimitive.vertices;
-    var indices = geometryPrimitive.indices;
-    var normals = geometryPrimitive.normals;
-
-    // Placeholder color insertion
-    var colors = new Float32Array([     // Colors
-       0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  // blue
-       0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  // blue
-       0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  // green
-       0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  // green
-       1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
-       1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
-    ]);
-
-    var indexBuffer = gl.createBuffer();
-    if( !indexBuffer){
-        console.log("Failed to create buffer object");
-        return -1;
-    }
-
-    initArrayBuffer(gl, vertices, 3, gl.FLOAT, 'a_Position');
-    initArrayBuffer(gl, colors, 3, gl.FLOAT, 'a_Color');
-    initArrayBuffer(gl, normals, 3, gl.FLOAT, 'a_Normal');
-
-    //Write the indices to buffer
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-
-    return indices.length;
-}
-
-/**
- * Creates a buffer containing vertex pairs that represent the normal of each of the geometries vertices
- * @param gl The WebGL context
- * @param geometryPrimitive The geometry we are visualising the normals of
- * @returns 
- */
- function initNormalHelpers(gl, geometryPrimitive){
-
-    var verticesIn = geometryPrimitive.vertices;
-    var normals = geometryPrimitive.normals;
-    var vertices = new Float32Array(verticesIn.length*2); // Start and end points of the visualised normals
-
-    let i = 0; // Iterate through vertices
-    let j = 0; // Iterates through verticesIn
-    while(j < verticesIn.length){
-        // Vertex x, y, z
-        vertices[i] = verticesIn[j];
-        vertices[i+1] = verticesIn[j+1];
-        vertices[i+2] = verticesIn[j+2];
-
-        // Vertex + Normal x, y, z
-        vertices[i+3] = verticesIn[j] + normals[j];
-        vertices[i+4] = verticesIn[j+1] + normals[j+1];
-        vertices[i+5] = verticesIn[j+2] + normals[j+2];
-
-        i = i + 6;
-        j = j + 3;
-    }
-
-    initArrayBuffer(gl, vertices, 3, gl.FLOAT, 'a_Position');
-
-    return vertices.length/3; // return number of coordinates
+    return buffer; // Success
 }
