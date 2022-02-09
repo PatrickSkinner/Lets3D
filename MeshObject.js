@@ -55,9 +55,6 @@ class MeshObject extends Object3D{
         var u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
         var u_cameraMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
         var u_NormalMatrix = gl.getUniformLocation(gl.program, 'u_NormalMatrix');
-        var u_LightColor = gl.getUniformLocation(gl.program, 'u_LightColor');
-        var u_LightPosition = gl.getUniformLocation(gl.program, 'u_LightPosition');
-        var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
 
         var normalMatrix = new Matrix4();
         var mvpMatrix = new Matrix4();
@@ -71,12 +68,8 @@ class MeshObject extends Object3D{
         gl.uniformMatrix4fv(u_NormalMatrix, false, normalMatrix.elements);
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.transform.elements);
 
-        gl.uniform3f(u_LightColor, 1.0, 1.0, 1.0); // Set light color to white
-        var lightPosition = new Vector3([3,3,3]);
-        gl.uniform3fv(u_LightPosition, lightPosition.elements);
-        gl.uniform3f(u_AmbientLight, 0.2, 0.2, 0.2);
-
-        gl.drawElements(gl.TRIANGLES, this.vCount, gl.UNSIGNED_BYTE, 0);
+        this.material.initializeMaterial();
+        gl.drawElements(gl.TRIANGLES, this.vCount, gl.UNSIGNED_INT, 0);
     }
 
     initializeMeshObject(gl){
@@ -107,6 +100,7 @@ class MeshObject extends Object3D{
         var indices = geometryPrimitive.indices;
         var normals = geometryPrimitive.normals;
 
+        /*
         // Placeholder color insertion
         var colors = new Float32Array([     // Colors
         0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  // blue
@@ -116,6 +110,17 @@ class MeshObject extends Object3D{
         1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
         1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
         ]);
+        */
+       
+        // Also placeholder
+        let colorsIn = [];
+        for(let i = 0; i < indices.length; i++){
+            colorsIn.push(1.0);
+            colorsIn.push(0.2);
+            colorsIn.push(0.2);
+        }
+        var colors = new Float32Array(colorsIn);
+        
 
         this.indexBuffer = gl.createBuffer();
         if( !this.indexBuffer){
@@ -163,6 +168,7 @@ class MeshObject extends Object3D{
         gl.uniformMatrix4fv(u_cameraMatrix, false, mvpMatrix.elements);
 
         gl.drawArrays(gl.LINES, 0, this.nCount);
+        
     }
 
     initializeNormalHelpers(gl){

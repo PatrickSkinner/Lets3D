@@ -103,7 +103,7 @@ class Cube extends Primitive{
             width, -height, depth,
         ]);
 
-        super.indices = new Uint8Array([
+        super.indices = new Uint32Array([
             0, 1, 2,        1, 2, 3, // Top
             4, 5, 6,        5, 6, 7, // Bottom
             8, 9, 10,       9, 10, 11, // Front
@@ -162,7 +162,6 @@ class Sphere extends Primitive{
                     normalArray.push(v1.normalize());
                     normalArray.push(v2.normalize());
                     normalArray.push(v4.normalize());
-
                 } else {
                     var dummy = new Vector3([0,0,0]);
                     verticeArray.push(v1);
