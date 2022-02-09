@@ -55,14 +55,14 @@ function main(){
     }
 
     scene = new Scene();
-    var cubeGeom = new Cube(1,1,1);
+    var cubeGeom = new Sphere(1, 32, 32);
 
     /*
     var cubeMat = new Material();
     cubeMat.fragmentShader = FSHADER_SOURCE;
     cubeMat.vertexShader = VSHADER_SOURCE;
     */
-    var cubeMat = new BlinnPhongMat();
+    var cubeMat = new GouraudShadedMat();
 
     var cube = new MeshObject(cubeGeom, cubeMat);
     scene.add(cube);
@@ -79,7 +79,7 @@ function main(){
     scene.setActiveCamera( camera );
 
     scene.setClearColor(0.25,0.25,0.25,1);
-    scene.showNormals = true;
+    scene.showNormals = false;
     
     window.requestAnimationFrame(draw);
 }
