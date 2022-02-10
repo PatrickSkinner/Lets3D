@@ -62,7 +62,7 @@ function main(){
     cubeMat.fragmentShader = FSHADER_SOURCE;
     cubeMat.vertexShader = VSHADER_SOURCE;
     */
-    var cubeMat = new GouraudShadedMat();
+    var cubeMat = new NormalMat();
 
     var cube = new MeshObject(cubeGeom, cubeMat);
     scene.add(cube);
@@ -78,7 +78,7 @@ function main(){
     camera.transformLookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
     scene.setActiveCamera( camera );
 
-    scene.setClearColor(0.25,0.25,0.25,1);
+    scene.setClearColor(0.5 ,0.5 ,1.0 ,1.0);
     scene.showNormals = false;
     
     window.requestAnimationFrame(draw);
