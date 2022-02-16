@@ -166,7 +166,7 @@ class NormalMat extends Material{
 
     'void main() {\n' +
         'vec3 normal = normalize(v_Normal);\n'+
-        // Rescale normals from (-1, 1), to (0, 2) then to (0, 1)
+        // Convert normal components with range (-1, 1) to colors components with range (0, 1)
         'float red = (1.0+normal.r)/2.0;\n'+
         'float green = (1.0+normal.g)/2.0;\n'+
         'float blue = (1.0+abs(normal.b))/2.0;\n'+
