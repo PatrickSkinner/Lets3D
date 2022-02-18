@@ -7,8 +7,8 @@ class Sphere extends Primitive{
         let indexArray = [];
 
         for( let t = 0; t < ySegments; t++){ 
-            let phi1 = (Math.PI/ySegments)*t; // y segments range from 0 to 180
-            let phi2 = (Math.PI/ySegments)*(t+1);
+            let phi1 = (Math.PI/(ySegments/2))*t; // y segments range from 0 to 180, use half of ySegments
+            let phi2 = (Math.PI/(ySegments/2))*(t+1);
 
             for( let p = 0; p < xSegments; p++){
                 let theta1 = ((2*Math.PI)/xSegments)*p; // x segments range from 0 to 360
@@ -27,7 +27,7 @@ class Sphere extends Primitive{
                     normalArray.push(v1.normalize());
                     normalArray.push(v2.normalize());
                     normalArray.push(v3.normalize());
-                } else if (t+1 == ySegments){ // Bottom of sphere
+                } else if (t+1 == (ySegments/2 + ySegments%2)){ // Bottom of sphere
                     verticeArray.push(v1);
                     verticeArray.push(v2);
                     verticeArray.push(v4);
