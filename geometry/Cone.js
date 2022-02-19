@@ -11,13 +11,13 @@ class Cone extends Primitive{
             let theta1 = ((2*Math.PI)/segments)*p; // Segments range from 0 to 360
             let theta2 = ((2*Math.PI)/segments)*(p+1); 
 
-            let v3 = new Vector3([radius*Math.sin(theta1), -length, radius*Math.cos(theta1)]); // Bottom left
-            let v4 = new Vector3([radius*Math.sin(theta2), -length, radius*Math.cos(theta2)]); // Bottom right
+            let v3 = new Vector3([radius*Math.sin(theta1), -length/2, radius*Math.cos(theta1)]); // Bottom left
+            let v4 = new Vector3([radius*Math.sin(theta2), -length/2, radius*Math.cos(theta2)]); // Bottom right
 
             // Bottom cap
             verticeArray.push(v3);
             verticeArray.push(v4);
-            verticeArray.push(new Vector3([0, -length, 0]));
+            verticeArray.push(new Vector3([0, -length/2, 0]));
             normalArray.push(new Vector3([0, -1, 0]));
             normalArray.push(new Vector3([0, -1, 0]));
             normalArray.push(new Vector3([0, -1, 0]));
@@ -28,9 +28,9 @@ class Cone extends Primitive{
             let theta1 = ((2*Math.PI)/segments)*p; // segments range from 0 to 360
             let theta2 = ((2*Math.PI)/segments)*(p+1); 
 
-            let v1 = new Vector3([0, length, 0]); // Top point
-            let v2 = new Vector3([radius*Math.sin(theta1), -length, radius*Math.cos(theta1)]); // Bottom left
-            let v3 = new Vector3([radius*Math.sin(theta2), -length, radius*Math.cos(theta2)]); // Bottom right
+            let v1 = new Vector3([0, length/2, 0]); // Top point
+            let v2 = new Vector3([radius*Math.sin(theta1), -length/2, radius*Math.cos(theta1)]); // Bottom left
+            let v3 = new Vector3([radius*Math.sin(theta2), -length/2, radius*Math.cos(theta2)]); // Bottom right
 
             verticeArray.push(v1);
             verticeArray.push(v2);
