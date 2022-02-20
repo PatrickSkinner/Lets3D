@@ -38,9 +38,9 @@ class Cone extends Primitive{
 
             // TODO: Set Y element of normal correctly using the cross product of the face
             // Normal of top is halfway between normal of two bottom points
-            normalArray.push(new Vector3([v2.elements[0]+(v3.elements[0]-v2.elements[0])/2, 0, v2.elements[2]+(v3.elements[2]-v2.elements[2])/2]).normalize());
-            normalArray.push(new Vector3([v2.elements[0], 0, v2.elements[2]]).normalize());
-            normalArray.push(new Vector3([v3.elements[0], 0, v3.elements[2]]).normalize());
+            normalArray.push(new Vector3([v2.elements[0]+(v3.elements[0]-v2.elements[0])/2, 0, v2.elements[2]+(v3.elements[2]-v2.elements[2])/2]).getNormalized());
+            normalArray.push(new Vector3([v2.elements[0], 0, v2.elements[2]]).getNormalized());
+            normalArray.push(new Vector3([v3.elements[0], 0, v3.elements[2]]).getNormalized());
         }
 
         // Instead of array of Vector3s we need arrays of each component [x,y,z,x,y,z,...]

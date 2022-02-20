@@ -47,16 +47,16 @@ class Cylinder extends Primitive{
             verticeArray.push(v1);
             verticeArray.push(v2);
             verticeArray.push(v3);
-            normalArray.push(new Vector3([v1.elements[0], 0, v1.elements[2]]).normalize());
-            normalArray.push(new Vector3([v2.elements[0], 0, v2.elements[2]]).normalize());
-            normalArray.push(new Vector3([v3.elements[0], 0, v3.elements[2]]).normalize());
+            normalArray.push(new Vector3([v1.elements[0], 0, v1.elements[2]]).getNormalized());
+            normalArray.push(new Vector3([v2.elements[0], 0, v2.elements[2]]).getNormalized());
+            normalArray.push(new Vector3([v3.elements[0], 0, v3.elements[2]]).getNormalized());
 
             verticeArray.push(v2);
             verticeArray.push(v3);
             verticeArray.push(v4);
-            normalArray.push(new Vector3([v2.elements[0], 0, v2.elements[2]]).normalize());
-            normalArray.push(new Vector3([v3.elements[0], 0, v3.elements[2]]).normalize());
-            normalArray.push(new Vector3([v4.elements[0], 0, v4.elements[2]]).normalize());
+            normalArray.push(new Vector3([v2.elements[0], 0, v2.elements[2]]).getNormalized());
+            normalArray.push(new Vector3([v3.elements[0], 0, v3.elements[2]]).getNormalized());
+            normalArray.push(new Vector3([v4.elements[0], 0, v4.elements[2]]).getNormalized());
 
             if(p == 1){
                 console.log(new Vector3([v1.elements[0], 0, v1.elements[2]]));
