@@ -49,6 +49,8 @@ class MeshObject extends Object3D{
                 let a_Normal = gl.getAttribLocation(gl.program, 'a_Normal');
                 gl.vertexAttribPointer(a_Normal, 3, gl.FLOAT, false, 0, 0);
                 gl.enableVertexAttribArray(a_Normal);
+
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             }
         }
 
