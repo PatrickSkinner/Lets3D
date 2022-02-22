@@ -56,17 +56,17 @@ class MeshObject extends Object3D{
         var u_cameraMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
         var u_NormalMatrix = gl.getUniformLocation(gl.program, 'u_NormalMatrix');
 
-        var normalMatrix = new Matrix4();
-        var mvpMatrix = new Matrix4();
+        var normalMatrix = mat4.create();
+        var mvpMatrix = mat4.create();
 
-        mvpMatrix.set(camera.mvpMatrix);
-        mvpMatrix.multiply(this.transform);
-        gl.uniformMatrix4fv(u_cameraMatrix, false, mvpMatrix.elements);
+        mat4.copy(mvpMatrix, camera.mvpMatrix);
+        mat4.multiply(mvpMatrix, mvpMatrix, this.transform);
+        gl.uniformMatrix4fv(u_cameraMatrix, false, mvpMatrix);
 
-        normalMatrix.setInverseOf(this.transform);
-        normalMatrix.transpose();
-        gl.uniformMatrix4fv(u_NormalMatrix, false, normalMatrix.elements);
-        gl.uniformMatrix4fv(u_ModelMatrix, false, this.transform.elements);
+        mat4.invert(normalMatrix, this.transform);
+        mat4.transpose(normalMatrix, normalMatrix);
+        gl.uniformMatrix4fv(u_NormalMatrix, false, normalMatrix);
+        gl.uniformMatrix4fv(u_ModelMatrix, false, this.transform);
 
         this.material.initializeMaterial();
         gl.drawElements(gl.TRIANGLES, this.vCount, gl.UNSIGNED_INT, 0);
@@ -161,11 +161,11 @@ class MeshObject extends Object3D{
         }
         
         var u_cameraMatrix = gl.getUniformLocation(this.normalHelperProgram, 'u_ViewMatrix');
-        var mvpMatrix = new Matrix4();
+        var mvpMatrix = mat4.create();
 
-        mvpMatrix.set(camera.mvpMatrix);
-        mvpMatrix.multiply(this.transform);
-        gl.uniformMatrix4fv(u_cameraMatrix, false, mvpMatrix.elements);
+        mat4.copy(mvpMatrix, camera.mvpMatrix);
+        mat4.multiply(mvpMatrix, mvpMatrix, this.transform);
+        gl.uniformMatrix4fv(u_cameraMatrix, false, mvpMatrix);
 
         gl.drawArrays(gl.LINES, 0, this.nCount);
         

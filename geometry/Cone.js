@@ -11,16 +11,17 @@ class Cone extends Primitive{
             let theta1 = ((2*Math.PI)/segments)*p; // Segments range from 0 to 360
             let theta2 = ((2*Math.PI)/segments)*(p+1); 
 
-            let v3 = new Vector3([radius*Math.sin(theta1), -length/2, radius*Math.cos(theta1)]); // Bottom left
-            let v4 = new Vector3([radius*Math.sin(theta2), -length/2, radius*Math.cos(theta2)]); // Bottom right
+            let v3 = createVector3(radius*Math.sin(theta1), -length/2, radius*Math.cos(theta1)); // Bottom left
+            let v4 = createVector3(radius*Math.sin(theta2), -length/2, radius*Math.cos(theta2)); // Bottom right
 
             // Bottom cap
             verticeArray.push(v3);
             verticeArray.push(v4);
-            verticeArray.push(new Vector3([0, -length/2, 0]));
-            normalArray.push(new Vector3([0, -1, 0]));
-            normalArray.push(new Vector3([0, -1, 0]));
-            normalArray.push(new Vector3([0, -1, 0]));
+            verticeArray.push(createVector3(0, -length/2, 0));
+            let downVec = createVector3(0, -1, 0);
+            normalArray.push(downVec);
+            normalArray.push(downVec);
+            normalArray.push(downVec);
         }
 
         // Sides of the cone
@@ -28,9 +29,9 @@ class Cone extends Primitive{
             let theta1 = ((2*Math.PI)/segments)*p; // segments range from 0 to 360
             let theta2 = ((2*Math.PI)/segments)*(p+1); 
 
-            let v1 = new Vector3([0, length/2, 0]); // Top point
-            let v2 = new Vector3([radius*Math.sin(theta1), -length/2, radius*Math.cos(theta1)]); // Bottom left
-            let v3 = new Vector3([radius*Math.sin(theta2), -length/2, radius*Math.cos(theta2)]); // Bottom right
+            let v1 = createVector3(0, length/2, 0); // Top point
+            let v2 = createVector3(radius*Math.sin(theta1), -length/2, radius*Math.cos(theta1)); // Bottom left
+            let v3 = createVector3(radius*Math.sin(theta2), -length/2, radius*Math.cos(theta2)); // Bottom right
 
             verticeArray.push(v1);
             verticeArray.push(v2);
@@ -38,9 +39,9 @@ class Cone extends Primitive{
 
             // TODO: Set Y element of normal correctly using the cross product of the face
             // Normal of top is halfway between normal of two bottom points
-            normalArray.push(new Vector3([v2.elements[0]+(v3.elements[0]-v2.elements[0])/2, 0, v2.elements[2]+(v3.elements[2]-v2.elements[2])/2]).getNormalized());
-            normalArray.push(new Vector3([v2.elements[0], 0, v2.elements[2]]).getNormalized());
-            normalArray.push(new Vector3([v3.elements[0], 0, v3.elements[2]]).getNormalized());
+            normalArray.push( normalizeVector3( createVector3(v2[0]+(v3[0]-v2[0])/2, 0, v2[2]+(v3[2]-v2[2])/2)));
+            normalArray.push( normalizeVector3( createVector3(v2[0], 0, v2[2])));
+            normalArray.push( normalizeVector3( createVector3(v3[0], 0, v3[2])));
         }
 
         // Instead of array of Vector3s we need arrays of each component [x,y,z,x,y,z,...]
@@ -49,8 +50,8 @@ class Cone extends Primitive{
         for(let i = 0; i < verticeArray.length; i++){
             indexArray.push(i);
             for(let j = 0; j < 3; j++){
-                verticeElements.push(verticeArray[i].elements[j]);
-                normalElements.push(normalArray[i].elements[j]);
+                verticeElements.push(verticeArray[i][j]);
+                normalElements.push(normalArray[i][j]);
             }
         }
 

@@ -65,8 +65,8 @@ class BlinnPhongMat extends Material{
         var u_SpecularAmount = gl.getUniformLocation(gl.program, 'u_SpecularAmount');
 
         gl.uniform3f(u_LightColor, 1.0, 1.0, 1.0);
-        var lightPosition = new Vector3([0, 5, 10]);
-        gl.uniform3fv(u_LightPosition, lightPosition.elements);
+        var lightPosition = createVector3(0, 5, 10);
+        gl.uniform3fv(u_LightPosition, lightPosition);
         gl.uniform3f(u_AmbientLight, 0.2, 0.2, 0.2);
         gl.uniform1f(u_SpecularAmount, 128);
         gl.uniform3f(u_SpecularColor, 1.0, 1.0, 1.0);

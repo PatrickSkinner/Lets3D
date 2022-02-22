@@ -51,8 +51,8 @@ class GouraudMat extends Material{
         var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
 
         gl.uniform3f(u_LightColor, 1.0, 1.0, 1.0);
-        var lightPosition = new Vector3([0, 5, 10]);
-        gl.uniform3fv(u_LightPosition, lightPosition.elements);
+        var lightPosition = createVector3(0, 5, 10);
+        gl.uniform3fv(u_LightPosition, lightPosition);
         gl.uniform3f(u_AmbientLight, 0.2, 0.2, 0.2);
     }
 }

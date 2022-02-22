@@ -113,3 +113,27 @@ function initArrayBuffer(gl, data, num, type, attribute) {
 
     return buffer; // Success
 }
+
+function createVector3(x, y, z){
+    let v = vec3.create();
+    vec3.set(v, x, y, z);
+    return v;
+}
+
+function normalizeVector3(vec){
+    let v = vec3.create();
+    vec3.normalize(v, vec);
+    return v;
+}
+
+function createVector4(x, y, z, w){
+    let v = vec4.create();
+    vec4.set(v, x, y, z, w);
+    return v;
+}
+
+function normalizeVector4(vec){
+    let v = vec4.create();
+    createVector4.normalize(v, vec);
+    return v;
+}

@@ -47,6 +47,9 @@ class Scene{
         gl.enable(gl.DEPTH_TEST);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         this.objectList.forEach(element => {
+            if(element instanceof Object3D){
+                element.update();
+            }
             if(element instanceof MeshObject){
                 element.draw(gl, this.activeCamera);
                 if(this.showNormals) element.drawNormals(gl, this.activeCamera);

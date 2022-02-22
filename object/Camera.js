@@ -6,15 +6,15 @@ class Camera extends Object3D{
         super();
 
         // Set the viewing volume
-        this.projectionMatrix = new Matrix4();
-        this.projectionMatrix.setPerspective( fov, aspectRatio, nearClipping, farClipping);
+        this.projectionMatrix = mat4.create();
+        mat4.perspective(this.projectionMatrix, fov, aspectRatio, nearClipping, farClipping);
         this.mvpMatrix = this.projectionMatrix;
     }
 
     transformLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ){
         super.transformLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         this.mvpMatrix = this.projectionMatrix;
-        this.mvpMatrix.multiply(this.transform);
+        mat4.multiply( this.mvpMatrix, this.mvpMatrix, this.transform);
     }
 
 }

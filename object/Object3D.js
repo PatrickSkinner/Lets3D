@@ -1,24 +1,19 @@
 class Object3D{
     constructor(){
-        this.transform = new Matrix4();
-        this.transform.setIdentity();
+        this.transform = mat4.create()
+        //this.worldTransform = mat4.create()
         this.parent = null;
         this.children = [];
     }
 
     translate(x, y, z){
-        var translationMat = new Matrix4();
-        translationMat.setIdentity();
-
-        translationMat.elements[12] = x;
-        translationMat.elements[13] = y;
-        translationMat.elements[14] = z;
-
-        this.transform.multiply(translationMat);
+        let translation = createVector3(x, y, z);
+        mat4.translate(this.transform, this.transform, translation);
     }
 
     rotate(angle, x, y, z){
-        this.transform.rotate(angle, x, y, z);
+        let axis = createVector3(x, y, z);
+        mat4.rotate(this.transform, this.transform, angle, axis);
     }
 
     /**
@@ -29,7 +24,11 @@ class Object3D{
      * @return this
     */
     transformLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ){
-        this.transform.lookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        let eye = createVector3(eyeX, eyeY, eyeZ);
+        let center = createVector3(centerX, centerY, centerZ);
+        let up = createVector3(upX, upY, upZ);
+
+        mat4.lookAt(this.transform, eye, center, up);
     }
 
     /**
@@ -64,6 +63,18 @@ class Object3D{
         if (index > -1) {
         this.children.splice(index, 1);
           child.parent = null;
+        }
+    }
+
+    /**
+     * Called once per frame.
+     */
+    update(){
+        if(this.parent){
+            //this.worldTransform.multiply(this.transform);
+            this.worldTransform = this.transform;
+        } else {
+            this.worldTransform = this.transform;
         }
     }
 }
