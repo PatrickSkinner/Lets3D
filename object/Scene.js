@@ -48,7 +48,9 @@ class Scene{
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         this.objectList.forEach(element => {
             if(element instanceof Object3D){
-                element.update();
+                if(!element.parent){ // Root node
+                    element.update();
+                }
             }
             if(element instanceof MeshObject){
                 element.draw(gl, this.activeCamera);

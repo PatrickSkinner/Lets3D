@@ -62,13 +62,13 @@ class MeshObject extends Object3D{
         var mvpMatrix = mat4.create();
 
         mat4.copy(mvpMatrix, camera.mvpMatrix);
-        mat4.multiply(mvpMatrix, mvpMatrix, this.transform);
+        mat4.multiply(mvpMatrix, mvpMatrix, this.worldTransform);
         gl.uniformMatrix4fv(u_cameraMatrix, false, mvpMatrix);
 
-        mat4.invert(normalMatrix, this.transform);
+        mat4.invert(normalMatrix, this.worldTransform);
         mat4.transpose(normalMatrix, normalMatrix);
         gl.uniformMatrix4fv(u_NormalMatrix, false, normalMatrix);
-        gl.uniformMatrix4fv(u_ModelMatrix, false, this.transform);
+        gl.uniformMatrix4fv(u_ModelMatrix, false, this.worldTransform);
 
         this.material.initializeMaterial();
         gl.drawElements(gl.TRIANGLES, this.vCount, gl.UNSIGNED_INT, 0);
@@ -166,7 +166,7 @@ class MeshObject extends Object3D{
         var mvpMatrix = mat4.create();
 
         mat4.copy(mvpMatrix, camera.mvpMatrix);
-        mat4.multiply(mvpMatrix, mvpMatrix, this.transform);
+        mat4.multiply(mvpMatrix, mvpMatrix, this.worldTransform);
         gl.uniformMatrix4fv(u_cameraMatrix, false, mvpMatrix);
 
         gl.drawArrays(gl.LINES, 0, this.nCount);

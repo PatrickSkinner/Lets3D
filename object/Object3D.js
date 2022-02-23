@@ -1,7 +1,7 @@
 class Object3D{
     constructor(){
         this.transform = mat4.create()
-        //this.worldTransform = mat4.create()
+        this.worldTransform = mat4.create()
         this.parent = null;
         this.children = [];
     }
@@ -36,6 +36,16 @@ class Object3D{
      * @param child Object to be set as child.
      */
     addChild(child){
+        if(child == this.parent){
+            console.log("Error: An object cannot be set as both the parent and child of another object.")
+            return;
+        }
+
+        if(child == this){
+            console.log("Error: An object cannot be set as its own child or parent.")
+            return;
+        }
+
         var alreadyAdded = false;
         this.children.forEach(element => {
             if( element == child ) alreadyAdded = true;
@@ -61,8 +71,8 @@ class Object3D{
     removeChild(child){      
         const index = this.children.indexOf(child);
         if (index > -1) {
-        this.children.splice(index, 1);
-          child.parent = null;
+            this.children.splice(index, 1);
+            child.parent = null;
         }
     }
 
@@ -71,10 +81,14 @@ class Object3D{
      */
     update(){
         if(this.parent){
-            //this.worldTransform.multiply(this.transform);
-            this.worldTransform = this.transform;
+            mat4.multiply(this.worldTransform,this.parent.worldTransform,this.transform);
         } else {
             this.worldTransform = this.transform;
         }
+
+        // Update all children
+        this.children.forEach(element => {
+            element.update();
+        });
     }
 }

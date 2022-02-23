@@ -55,37 +55,34 @@ function main(){
     }
 
     scene = new Scene();
-    var cubeGeom = new Sphere(1, 32, 32);
+    var cubeGeom = new Cube(1, 1, 1);
 
-    /*
-    var cubeMat = new Material();
-    cubeMat.fragmentShader = FSHADER_SOURCE;
-    cubeMat.vertexShader = VSHADER_SOURCE;
-    */
-    var cubeMat = new NormalMat();
+    var cubeMat = new BlinnPhongMat();
 
     var cube = new MeshObject(cubeGeom, cubeMat);
     scene.add(cube);
 
-    /*
-    var cubeGeom2 = new Cube(1.5, 0.5, 0.5);
+    var cubeGeom2 = new Cylinder(1, 2, 32);
     var cube2 = new MeshObject(cubeGeom2, cubeMat);
-    cube2.rotate(40, 1, 0, 0);
+    cube2.translate(2.6, 0, 0);
     scene.add(cube2);
-    */
 
-    let camera = new Camera(30, 1, 1, 100);
-    camera.transformLookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
+    cube.addChild(cube2);
+
+    let camera = new Camera(0.52, 1, 1, 100);
+    //camera.transformLookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
+    camera.transformLookAt(0, 0, 12, 0, 0, 0, 0, 1, 0);
     scene.setActiveCamera( camera );
 
     scene.setClearColor(0.5 ,0.5 ,1.0 ,1.0);
-    scene.showNormals = false;
+    scene.showNormals = true;
     
     window.requestAnimationFrame(draw);
 }
 
 function draw(timestamp){
     scene.renderScene(gl);
-    scene.objectList[0].rotate(1/5, 0, 1, 0);
+    scene.objectList[0].rotate(1/500, 0, 1, 0);
+    scene.objectList[1].rotate(-1/200, 1, 0, 0);
     window.requestAnimationFrame(draw);
 }
