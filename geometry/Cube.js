@@ -8,6 +8,10 @@ class Cube extends Primitive{
      constructor(width, height, depth){
 
         super(width, height, depth);
+
+        width /= 2;
+        height /= 2;
+        depth /= 2;
         
         super.vertices = new Float32Array([
             // Top
@@ -66,6 +70,5 @@ class Cube extends Primitive{
             -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  // Left
             1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   // Right
         ]);
-  
     }
 }

@@ -2,46 +2,6 @@ var gl;
 var scene;
 
 function main(){
-    var VSHADER_SOURCE=
-    'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Color;\n' +
-    'attribute vec4 a_Normal;\n' +
-
-    'uniform mat4 u_ViewMatrix;\n' +
-    'uniform mat4 u_ModelMatrix;\n' +    // Model matrix
-    'uniform mat4 u_NormalMatrix;\n' +   // Transformation matrix of the normal
-
-    'varying vec4 v_Color;\n' +
-    'varying vec3 v_Normal;\n' +
-    'varying vec3 v_Position;\n' +
-
-    'void main() {\n'+
-        'gl_Position = u_ViewMatrix * a_Position;\n'+
-        'v_Position = vec3(u_ModelMatrix * a_Position);\n' + // Vertex position in world coords
-        'v_Normal = normalize(vec3(u_NormalMatrix * a_Normal));\n'+ // Normalise length to 1
-        'v_Color = a_Color;\n'+
-    '}\n';
-
-
-    var FSHADER_SOURCE = 
-    'precision mediump float;\n' +
-    'uniform vec3 u_LightColor;\n' +     // Light color
-    'uniform vec3 u_LightPosition;\n' +  // Position of the light source
-    'uniform vec3 u_AmbientLight;\n' +   // Ambient light color
-    'varying vec3 v_Normal;\n' +
-    'varying vec3 v_Position;\n' +
-    'varying vec4 v_Color;\n' +
-    'void main() {\n' +
-        'vec3 normal = normalize(v_Normal);\n' + // Normalise interpolated normal
-        'vec3 lightDirection = normalize(u_LightPosition - v_Position);\n' + // Normalised light direction
-        'float nDotL = max(dot(lightDirection, normal), 0.0);\n' +
-
-        // Combine diffuse and ambient for final colour.
-        'vec3 diffuse = u_LightColor * v_Color.rgb * nDotL;\n' +
-        'vec3 ambient = u_AmbientLight * v_Color.rgb;\n' +
-        'gl_FragColor = vec4(diffuse + ambient, v_Color.a);\n' +
-    '}\n';
-
     var canvas = document.getElementById('example');
     if(!canvas){
         console.log('Failed to retrieve canvas element');
@@ -55,27 +15,26 @@ function main(){
     }
 
     scene = new Scene();
-    var cubeGeom = new Cube(1, 1, 1);
 
-    var cubeMat = new BlinnPhongMat();
+    var geometry1 = new Cylinder(1, 2, 24);
+    var material1 = new BlinnPhongMat();
+    var object1 = new MeshObject(geometry1, material1);
+    scene.add(object1);
 
-    var cube = new MeshObject(cubeGeom, cubeMat);
-    scene.add(cube);
+    var geometry2 = new Cube(2, 2, 2);
+    var object2 = new MeshObject(geometry2, material1);
+    object2.translate(2.6, 0, 0);
+    scene.add(object2);
 
-    var cubeGeom2 = new Cylinder(1, 2, 32);
-    var cube2 = new MeshObject(cubeGeom2, cubeMat);
-    cube2.translate(2.6, 0, 0);
-    scene.add(cube2);
-
-    cube.addChild(cube2);
+    object1.addChild(object2);
 
     let camera = new Camera(0.52, 1, 1, 100);
     //camera.transformLookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
-    camera.transformLookAt(0, 0, 12, 0, 0, 0, 0, 1, 0);
+    camera.transformLookAt(0, 6, 12, 0, 0, 0, 0, 1, 0);
     scene.setActiveCamera( camera );
 
     scene.setClearColor(0.5 ,0.5 ,1.0 ,1.0);
-    scene.showNormals = true;
+    scene.showNormals = true; // Visualise vertex normals
     
     window.requestAnimationFrame(draw);
 }
