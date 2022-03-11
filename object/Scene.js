@@ -4,11 +4,13 @@ class Scene{
     objectList;
     cColor; // Color to clear screen to when clearColor() is called
     showNormals;
+    lightList;
 
     constructor(){
         this.objectList = [];
         this.cColor = [0,0,0,1];
         this.showNormals = false;
+        this.lightList = [];
     }
 
     /**
@@ -17,6 +19,7 @@ class Scene{
      */
     add(newObject){
         this.objectList.push(newObject);
+        if(newObject instanceof Light) this.lightList.push(newObject);
     }
 
     /**
@@ -53,7 +56,7 @@ class Scene{
                 }
             }
             if(element instanceof MeshObject){
-                element.draw(gl, this.activeCamera);
+                element.draw(gl, this.activeCamera, this.lightList);
                 if(this.showNormals) element.drawNormals(gl, this.activeCamera);
             }
         });

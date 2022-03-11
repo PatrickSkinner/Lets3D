@@ -26,7 +26,7 @@ class MeshObject extends Object3D{
      * @param camera Camera to render with
      * @returns 
      */
-    draw(gl, camera){
+    draw(gl, camera, lights){
         if(!this.program){
             this.initializeMeshObject(gl); // This should only ever be called once
         } else {
@@ -70,7 +70,7 @@ class MeshObject extends Object3D{
         gl.uniformMatrix4fv(u_NormalMatrix, false, normalMatrix);
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.worldTransform);
 
-        this.material.initializeMaterial();
+        this.material.initializeMaterial(lights);
         gl.drawElements(gl.TRIANGLES, this.vCount, gl.UNSIGNED_INT, 0);
     }
 
@@ -117,9 +117,9 @@ class MeshObject extends Object3D{
         // Also placeholder
         let colorsIn = [];
         for(let i = 0; i < indices.length; i++){
-            colorsIn.push(1.0);
-            colorsIn.push(0.2);
-            colorsIn.push(0.2);
+            colorsIn.push(0.0);
+            colorsIn.push(0.8);
+            colorsIn.push(0.0);
         }
         var colors = new Float32Array(colorsIn);
         

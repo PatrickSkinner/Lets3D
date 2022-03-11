@@ -16,8 +16,13 @@ function main(){
 
     scene = new Scene();
 
+    var pl = new PointLight( createVector3(0.2, 0.2, 0.2), createVector3(1.0, 0.0, 0.0), createVector3(0.8, 0.8, 0.8) );
+    pl.translate(-5, 5, 10);
+    scene.add(pl);
+
     var geometry1 = new Cylinder(1, 2, 24);
-    var material1 = new BlinnPhongMat();
+    //var material1 = new BlinnPhongMat(1.0, 0.0, 0.0, 128);
+    var material1 = new BlinnPhongMat(0.4, 0.4, 0.4, 64);
     var object1 = new MeshObject(geometry1, material1);
     scene.add(object1);
 
@@ -33,6 +38,14 @@ function main(){
     camera.transformLookAt(0, 6, 12, 0, 0, 0, 0, 1, 0);
     scene.setActiveCamera( camera );
 
+    var pl2 = new PointLight( createVector3(0.2, 0.2, 0.2), createVector3(0.0, 0.0, 1.0), createVector3(0.8, 0.8, 0.8) );
+    pl2.translate(5, 5, 10);
+    scene.add(pl2);
+
+    var pl2 = new PointLight( createVector3(0.1, 0.1, 0.1), createVector3(0.0, 0.0, 1.0), createVector3(0.8, 0.8, 0.8) );
+    pl2.translate(0, 25, 10);
+    scene.add(pl2);
+
     scene.setClearColor(0.5 ,0.5 ,1.0 ,1.0);
     scene.showNormals = true; // Visualise vertex normals
     
@@ -41,7 +54,7 @@ function main(){
 
 function draw(timestamp){
     scene.renderScene(gl);
-    scene.objectList[0].rotate(1/500, 0, 1, 0);
-    scene.objectList[1].rotate(-1/200, 1, 0, 0);
+    scene.objectList[1].rotate(1/500, 0, 1, 0);
+    //scene.objectList[1].rotate(-1/200, 1, 0, 0);
     window.requestAnimationFrame(draw);
 }

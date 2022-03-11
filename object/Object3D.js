@@ -31,6 +31,13 @@ class Object3D{
         mat4.lookAt(this.transform, eye, center, up);
     }
 
+    getPosition(){
+        let out = createVector4();
+        let pos = createVector4(0,0,0,1);
+        mat4.multiply(out, this.transform, pos );
+        return out;
+    }
+
     /**
      * Create a parent-child relationship with a given object. If the object already has a parent that relationship will be overwritten.
      * @param child Object to be set as child.
