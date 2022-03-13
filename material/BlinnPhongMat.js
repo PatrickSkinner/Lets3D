@@ -87,9 +87,6 @@ class BlinnPhongMat extends Material{
         var u_Color = gl.getUniformLocation(gl.program, 'u_Color');
         gl.uniform4f(u_Color, this.color[0], this.color[1], this.color[2], this.color[3]);
 
-        var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
-        gl.uniform3f(u_AmbientLight, 0.1, 0.1, 0.1); // TODO: Get ambient from scene
-
         var u_SpecularAmount = gl.getUniformLocation(gl.program, 'u_SpecularAmount');
         gl.uniform1f(u_SpecularAmount, this.shininess);
 
@@ -97,12 +94,20 @@ class BlinnPhongMat extends Material{
         gl.uniform1i(u_numLights, lights.length);
 
         for(var i = 0; i < lights.length; i++){
-            let pos = lights[i].getPosition();
-            let dif = lights[i].diffuse;
-            let spec = lights[i].specular;
-            gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].position"), pos[0], pos[1], pos[2]);
-            gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].diffuse"), dif[0], dif[1], dif[2]);
-            gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].specular"), spec[0], spec[1], spec[2]);
+            
+            if(lights[i] instanceof PointLight){
+                let pos = lights[i].getPosition();
+                let dif = lights[i].diffuse;
+                let spec = lights[i].specular;
+                gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].position"), pos[0], pos[1], pos[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].diffuse"), dif[0], dif[1], dif[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].specular"), spec[0], spec[1], spec[2]);
+            }
+
+            if(lights[i] instanceof AmbientLight){
+                var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
+                gl.uniform3fv(u_AmbientLight, lights[i].ambient);
+            }
         }
     }
 }
