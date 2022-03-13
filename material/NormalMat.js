@@ -35,14 +35,6 @@ class NormalMat extends Material{
         this.fragmentShader = this.FSHADER_SOURCE;
     }
 
-    initializeMaterial(){
-        var u_LightPosition = gl.getUniformLocation(gl.program, 'u_LightPosition');
-        var u_LightColor = gl.getUniformLocation(gl.program, 'u_LightColor');
-        var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
-
-        gl.uniform3f(u_LightColor, 1.0, 1.0, 1.0);
-        var lightPosition = createVector3(0, 5, 10);
-        gl.uniform3fv(u_LightPosition, lightPosition);
-        gl.uniform3f(u_AmbientLight, 0.2, 0.2, 0.2);
+    initializeMaterial(lights){
     }
 }

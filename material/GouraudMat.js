@@ -62,7 +62,7 @@ class GouraudMat extends Material{
         'gl_FragColor = vec4(color, v_Color.a);\n' +
     '}\n';
 
-    constructor(colorR, colorG, colorB, shininess){
+    constructor(colorR, colorG, colorB){
         super();
         this.color = createVector4(colorR, colorG, colorB, 1.0);
         this.vertexShader = this.VSHADER_SOURCE;
