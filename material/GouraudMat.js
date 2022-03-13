@@ -7,7 +7,6 @@ class GouraudMat extends Material{
     'struct PointLight {\n' +   
         'vec3 position;\n' +   
 
-        'vec3 ambient;\n' +   
         'vec3 diffuse;\n' +   
         'vec3 specular;\n' +   
     '};\n' +
@@ -72,7 +71,7 @@ class GouraudMat extends Material{
 
     initializeMaterial(lights){
         var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
-        gl.uniform3f(u_AmbientLight, 0.2, 0.2, 0.2); // TODO: Get ambient from scene
+        gl.uniform3f(u_AmbientLight, 0.1, 0.1, 0.1); // TODO: Get ambient from scene
 
         var u_Color = gl.getUniformLocation(gl.program, 'u_Color');
         gl.uniform4f(u_Color, this.color[0], this.color[1], this.color[2], this.color[3]);

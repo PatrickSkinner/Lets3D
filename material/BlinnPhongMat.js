@@ -29,7 +29,6 @@ class BlinnPhongMat extends Material{
     'struct PointLight {\n' +   
         'vec3 position;\n' +   
 
-        'vec3 ambient;\n' +   
         'vec3 diffuse;\n' +   
         'vec3 specular;\n' +   
     '};\n' +
@@ -39,6 +38,7 @@ class BlinnPhongMat extends Material{
 
     'uniform vec3 u_CameraPosition;\n' + // Position of the camera
     'uniform float u_SpecularAmount;\n' +   // How shiny the surface is
+    'uniform vec3 u_AmbientLight;\n' +   // Ambient light color
 
     'varying vec3 v_Normal;\n' +
     'varying vec3 v_Position;\n' +
@@ -57,7 +57,7 @@ class BlinnPhongMat extends Material{
             'specular = pow(specularAngle, u_SpecularAmount);\n'+
         '}\n'+
 
-        'vec3 color = (light.ambient*v_Color.rgb) + (light.diffuse* v_Color.rgb * nDotL) + (light.specular * specular);\n' +
+        'vec3 color =  (light.diffuse* v_Color.rgb * nDotL) + (light.specular * specular);\n' +
         'return color;\n'+
     '}\n' +   
 
@@ -68,6 +68,8 @@ class BlinnPhongMat extends Material{
         'for(int i = 0; i < MAX_POINT_LIGHTS; i++){\n'+ // TODO: This should be u_numLights
             'result += CalcPointLight(pointLights[i], normal, viewDirection);\n'+
         '}\n'+
+
+        'result += (u_AmbientLight*v_Color.rgb);\n'+
         
         'gl_FragColor = vec4(result, v_Color.a);\n' +
     '}\n';
@@ -85,6 +87,9 @@ class BlinnPhongMat extends Material{
         var u_Color = gl.getUniformLocation(gl.program, 'u_Color');
         gl.uniform4f(u_Color, this.color[0], this.color[1], this.color[2], this.color[3]);
 
+        var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
+        gl.uniform3f(u_AmbientLight, 0.1, 0.1, 0.1); // TODO: Get ambient from scene
+
         var u_SpecularAmount = gl.getUniformLocation(gl.program, 'u_SpecularAmount');
         gl.uniform1f(u_SpecularAmount, this.shininess);
 
@@ -94,11 +99,9 @@ class BlinnPhongMat extends Material{
         for(var i = 0; i < lights.length; i++){
             let pos = lights[i].getPosition();
             let dif = lights[i].diffuse;
-            let amb = lights[i].ambient;
             let spec = lights[i].specular;
             gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].position"), pos[0], pos[1], pos[2]);
             gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].diffuse"), dif[0], dif[1], dif[2]);
-            gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].ambient"), amb[0], amb[1], amb[2]);
             gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].specular"), spec[0], spec[1], spec[2]);
         }
     }
