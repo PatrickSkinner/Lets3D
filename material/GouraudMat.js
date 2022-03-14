@@ -6,13 +6,20 @@ class GouraudMat extends Material{
 
     'struct PointLight {\n' +   
         'vec3 position;\n' +   
+        'vec3 diffuse;\n' +   
+        'vec3 specular;\n' +   
+    '};\n' +
 
+    'struct DirectionalLight {\n' +  
+        'vec3 direction;\n'+ 
+        'vec3 position;\n' +   
         'vec3 diffuse;\n' +   
         'vec3 specular;\n' +   
     '};\n' +
 
     'uniform PointLight pointLights[MAX_POINT_LIGHTS];\n'+
     'uniform int u_numLights;\n'+
+    'uniform DirectionalLight dirLight;\n'+
 
     'attribute vec4 a_Position;\n' +
     'attribute vec4 a_Color;\n' +
@@ -34,6 +41,12 @@ class GouraudMat extends Material{
         'v_LightColor += nDotL*light.diffuse;\n'+
     '}\n' +   
 
+    'void CalcDirectionalLight( DirectionalLight light ){\n' +   
+        'vec3 lightDirection = -normalize(light.direction);\n' + 
+        'float nDotL = max( dot(lightDirection, v_Normal), 0.0);\n' +
+        'v_LightColor += nDotL*light.diffuse;\n'+
+    '}\n' +   
+
     'void main() {\n'+
         'gl_Position = u_ViewMatrix * a_Position;\n'+
         'v_Position = vec3(u_ModelMatrix * a_Position);\n' + // Vertex position in world coords
@@ -44,6 +57,8 @@ class GouraudMat extends Material{
         'for(int i = 0; i < MAX_POINT_LIGHTS; i++){\n'+ // TODO: This should be u_numLights
             'CalcPointLight(pointLights[i]);\n'+
         '}\n'+
+
+        'CalcDirectionalLight(dirLight);\n'+
     
     '}\n';
 
@@ -84,6 +99,15 @@ class GouraudMat extends Material{
                 let dif = lights[i].diffuse;
                 gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].position"), pos[0], pos[1], pos[2]);
                 gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].diffuse"), dif[0], dif[1], dif[2]);
+            }
+
+            if(lights[i] instanceof DirectionalLight){
+                let pos = lights[i].getPosition();
+                let dif = lights[i].diffuse;
+                let dir = lights[i].direction;
+                gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.position"), pos[0], pos[1], pos[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.diffuse"), dif[0], dif[1], dif[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.direction"), dir[0], dir[1], dir[2]);
             }
 
             if(lights[i] instanceof AmbientLight){

@@ -28,11 +28,18 @@ class BlinnPhongMat extends Material{
 
     'struct PointLight {\n' +   
         'vec3 position;\n' +   
-
         'vec3 diffuse;\n' +   
         'vec3 specular;\n' +   
     '};\n' +
 
+    'struct DirectionalLight {\n' +  
+        'vec3 direction;\n'+ 
+        'vec3 position;\n' +   
+        'vec3 diffuse;\n' +   
+        'vec3 specular;\n' +   
+    '};\n' +
+
+    'uniform DirectionalLight dirLight;\n'+
     'uniform PointLight pointLights[MAX_POINT_LIGHTS];\n'+
     'uniform int u_numLights;\n'+
 
@@ -61,6 +68,22 @@ class BlinnPhongMat extends Material{
         'return color;\n'+
     '}\n' +   
 
+    'vec3 CalcDirectionalLight( DirectionalLight light, vec3 normal, vec3 viewDirection){\n' +   
+        'vec3 lightDirection = -normalize(light.direction);\n' + // Normalised light direction
+
+        'float nDotL = max( dot(lightDirection, normal), 0.0);\n' +
+        'float specular = 0.0;\n'+
+
+        'if (nDotL > 0.0) {\n'+
+            'vec3 halfwayVector = normalize(lightDirection + viewDirection);\n'+
+            'float specularAngle = max( dot(halfwayVector, normal), 0.0);\n'+
+            'specular = pow(specularAngle, u_SpecularAmount);\n'+
+        '}\n'+
+
+        'vec3 color =  (light.diffuse* v_Color.rgb * nDotL) + (light.specular * specular);\n' +
+        'return color;\n'+
+    '}\n' + 
+
     'void main() {\n' +
         'vec3 normal = normalize(v_Normal);\n' + // Normalise interpolated normal
         'vec3 viewDirection = normalize(v_Position);\n'+
@@ -68,6 +91,8 @@ class BlinnPhongMat extends Material{
         'for(int i = 0; i < MAX_POINT_LIGHTS; i++){\n'+ // TODO: This should be u_numLights
             'result += CalcPointLight(pointLights[i], normal, viewDirection);\n'+
         '}\n'+
+
+        'result += CalcDirectionalLight(dirLight, normal, viewDirection);\n'+
 
         'result += (u_AmbientLight*v_Color.rgb);\n'+
         
@@ -102,6 +127,17 @@ class BlinnPhongMat extends Material{
                 gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].position"), pos[0], pos[1], pos[2]);
                 gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].diffuse"), dif[0], dif[1], dif[2]);
                 gl.uniform3f(gl.getUniformLocation(gl.program, "pointLights["+i+"].specular"), spec[0], spec[1], spec[2]);
+            }
+
+            if(lights[i] instanceof DirectionalLight){
+                let pos = lights[i].getPosition();
+                let dif = lights[i].diffuse;
+                let spec = lights[i].specular;
+                let dir = lights[i].direction;
+                gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.position"), pos[0], pos[1], pos[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.diffuse"), dif[0], dif[1], dif[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.specular"), spec[0], spec[1], spec[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.direction"), dir[0], dir[1], dir[2]);
             }
 
             if(lights[i] instanceof AmbientLight){
