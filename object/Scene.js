@@ -3,13 +3,15 @@ class Scene{
     activeCamera; 
     objectList;
     cColor; // Color to clear screen to when clearColor() is called
-    showNormals;
+    showNormals; // Set true to draw the normals for each meshObject
+    showLights; // Set true to visualise point and directional lights
     lightList;
 
     constructor(){
         this.objectList = [];
         this.cColor = [0,0,0,1];
         this.showNormals = false;
+        this.showLights = false;
         this.lightList = [];
     }
 
@@ -58,6 +60,9 @@ class Scene{
             if(element instanceof MeshObject){
                 element.draw(gl, this.activeCamera, this.lightList);
                 if(this.showNormals) element.drawNormals(gl, this.activeCamera);
+            }
+            if( this.showLights && element instanceof Light){
+                element.drawLight(gl, this.activeCamera);
             }
         });
     }
