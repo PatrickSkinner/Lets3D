@@ -31,6 +31,13 @@ class Object3D{
         mat4.lookAt(this.transform, eye, center, up);
     }
 
+    setPosition(x, y, z){
+        let pos = createVector3(x, y, z);
+        this.transform[12] = pos[0];
+        this.transform[13] = pos[1];
+        this.transform[14] = pos[2];
+    }
+
     getPosition(){
         let out = createVector4();
         let pos = createVector4(0,0,0,1);

@@ -15,7 +15,7 @@ class Light extends Object3D{
      drawLight(gl, camera){
         if(this instanceof AmbientLight) return;
         if(!this.program){
-            this.initializeLightHelper(gl); // This should only ever be called once
+            this.initializeLightHelper(gl); // This should only ever be called once per object
         } else {
             if(gl.program != this.program){
                 gl.program = this.program;
@@ -63,7 +63,7 @@ class Light extends Object3D{
 
         this.vCount = this.initHelperBuffer(gl, this.geometry);
         if (this.vCount < 0){
-            console.log("Failed to set vertex position of normal helpers");
+            console.log("Failed to set vertex position of light helper");
             return;
         }
     }
@@ -82,13 +82,12 @@ class Light extends Object3D{
         var vertices = [];
 
         var dist = 0.15;
-        var origin = this.getPosition();
-        vertices[0] = createVector3( origin[0], origin[1]+dist*1.5, origin[2] );
-        vertices[1] = createVector3( origin[0], origin[1]-dist*1.5, origin[2] );
-        vertices[2] = createVector3( origin[0]+dist, origin[1], origin[2]-dist );
-        vertices[3] = createVector3( origin[0]+dist, origin[1], origin[2]+dist );
-        vertices[4] = createVector3( origin[0]-dist, origin[1], origin[2]-dist );
-        vertices[5] = createVector3( origin[0]-dist, origin[1], origin[2]+dist );
+        vertices[0] = createVector3( 0, dist*1.5, 0 );
+        vertices[1] = createVector3( 0, -dist*1.5, 0 );
+        vertices[2] = createVector3( dist, 0, -dist );
+        vertices[3] = createVector3( dist, 0, dist );
+        vertices[4] = createVector3( -dist, 0, -dist );
+        vertices[5] = createVector3( -dist, 0, dist );
 
         var verticeComponents = [];
         for(var i = 0; i < vertices.length; i++){
@@ -121,14 +120,13 @@ class Light extends Object3D{
         var vertices = [];
 
         var dist = 0.25;
-        var origin = this.getPosition();
-        vertices[0] = createVector3( origin[0]+dist, origin[1], origin[2]-dist );
-        vertices[1] = createVector3( origin[0]+dist, origin[1], origin[2]+dist );
-        vertices[2] = createVector3( origin[0]-dist, origin[1], origin[2]-dist );
-        vertices[3] = createVector3( origin[0]-dist, origin[1], origin[2]+dist );
+        vertices[0] = createVector3(dist, -dist, 0);
+        vertices[1] = createVector3(dist, dist, 0);
+        vertices[2] = createVector3(-dist, -dist, 0);
+        vertices[3] = createVector3(-dist, dist, 0);
 
-        vertices[4] = createVector3( origin[0], origin[1], origin[2]);
-        vertices[5] = createVector3( origin[0], origin[1]-(dist*2), origin[2]);
+        vertices[4] = createVector3(0, 0, 0);
+        vertices[5] = createVector3(0, 0, -(dist*2));
 
         var verticeComponents = [];
         for(var i = 0; i < vertices.length; i++){
