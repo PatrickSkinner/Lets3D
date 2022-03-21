@@ -1,7 +1,6 @@
 class BasicMat extends Material{
     VSHADER_SOURCE=
     'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Color;\n' +
     'attribute vec4 a_Normal;\n' +
 
     'uniform mat4 u_ViewMatrix;\n' +
@@ -9,7 +8,7 @@ class BasicMat extends Material{
     'uniform mat4 u_NormalMatrix;\n' +   // Transformation matrix of the normal
     'void main() {\n'+
         'gl_Position = u_ViewMatrix * a_Position;\n'+
-        'a_Color;\n'+
+        'a_Normal;\n'+
     '}\n';
 
     FSHADER_SOURCE = 

@@ -1,7 +1,6 @@
 class NormalMat extends Material{
     VSHADER_SOURCE=
     'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Color;\n' +
     'attribute vec4 a_Normal;\n' +
 
     'uniform mat4 u_ViewMatrix;\n' +
@@ -13,7 +12,6 @@ class NormalMat extends Material{
     'void main() {\n'+
         'gl_Position = u_ViewMatrix * a_Position;\n'+
         'v_Normal = normalize(vec3(u_NormalMatrix * a_Normal));\n'+ // Normalise length to 1
-        'a_Color;\n'+
     '}\n';
 
     FSHADER_SOURCE = 

@@ -22,7 +22,6 @@ class GouraudMat extends Material{
     'uniform DirectionalLight dirLight;\n'+
 
     'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Color;\n' +
     'attribute vec4 a_Normal;\n' +
 
     'uniform mat4 u_ViewMatrix;\n' +
@@ -52,7 +51,6 @@ class GouraudMat extends Material{
         'v_Position = vec3(u_ModelMatrix * a_Position);\n' + // Vertex position in world coords
         'v_Normal = normalize(vec3(u_NormalMatrix * a_Normal));\n'+ // Normalise length to 1
         'v_Color = u_Color;\n'+
-        'a_Color;\n'+        
 
         'for(int i = 0; i < MAX_POINT_LIGHTS; i++){\n'+ // TODO: This should be u_numLights
             'CalcPointLight(pointLights[i]);\n'+

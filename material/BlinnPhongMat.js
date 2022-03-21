@@ -1,7 +1,6 @@
 class BlinnPhongMat extends Material{
     VSHADER_SOURCE=
     'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Color;\n' +
     'attribute vec4 a_Normal;\n' +
 
     'uniform mat4 u_ViewMatrix;\n' +
@@ -18,7 +17,6 @@ class BlinnPhongMat extends Material{
         'v_Position = vec3(u_ModelMatrix * a_Position);\n' + // Vertex position in world coords
         'v_Normal = normalize(vec3(u_NormalMatrix * a_Normal));\n'+ // Normalise length to 1
         'v_Color = u_Color;\n'+
-        'a_Color;\n'+
     '}\n';
 
     FSHADER_SOURCE = 

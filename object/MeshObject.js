@@ -40,11 +40,6 @@ class MeshObject extends Object3D{
                 gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
                 gl.enableVertexAttribArray(a_Position);
 
-                gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-                let a_Color = gl.getAttribLocation(gl.program, 'a_Color');
-                gl.vertexAttribPointer(a_Color, 3, gl.FLOAT, false, 0, 0);
-                gl.enableVertexAttribArray(a_Color);
-
                 gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
                 let a_Normal = gl.getAttribLocation(gl.program, 'a_Normal');
                 gl.vertexAttribPointer(a_Normal, 3, gl.FLOAT, false, 0, 0);
@@ -102,28 +97,6 @@ class MeshObject extends Object3D{
         var indices = geometryPrimitive.indices;
         var normals = geometryPrimitive.normals;
 
-        /*
-        // Placeholder color insertion
-        var colors = new Float32Array([     // Colors
-        0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  // blue
-        0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  0.4, 0.4, 1.0,  // blue
-        0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  // green
-        0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  0.4, 1.0, 0.4,  // green
-        1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
-        1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  1.0, 0.4, 0.4,  // red
-        ]);
-        */
-       
-        // Also placeholder
-        let colorsIn = [];
-        for(let i = 0; i < indices.length; i++){
-            colorsIn.push(0.0);
-            colorsIn.push(0.8);
-            colorsIn.push(0.0);
-        }
-        var colors = new Float32Array(colorsIn);
-        
-
         this.indexBuffer = gl.createBuffer();
         if( !this.indexBuffer){
             console.log("Failed to create buffer object");
@@ -131,7 +104,6 @@ class MeshObject extends Object3D{
         }
 
         this.vertexBuffer = initArrayBuffer(gl, vertices, 3, gl.FLOAT, 'a_Position');
-        this.colorBuffer = initArrayBuffer(gl, colors, 3, gl.FLOAT, 'a_Color');
         this.normalBuffer = initArrayBuffer(gl, normals, 3, gl.FLOAT, 'a_Normal');
 
         // Write the indices to buffer
