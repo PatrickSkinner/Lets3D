@@ -45,6 +45,13 @@ class MeshObject extends Object3D{
                 gl.vertexAttribPointer(a_Normal, 3, gl.FLOAT, false, 0, 0);
                 gl.enableVertexAttribArray(a_Normal);
 
+                if(this.geometry.textureCoords != null){
+                    gl.bindBuffer(gl.ARRAY_BUFFER, this.uvBuffer);
+                    let a_TexCoord = gl.getAttribLocation(gl.program, 'a_TexCoord');
+                    gl.vertexAttribPointer(a_TexCoord, 3, gl.FLOAT, false, 0, 0);
+                    gl.enableVertexAttribArray(a_TexCoord);
+                }
+
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             }
         }
@@ -96,6 +103,7 @@ class MeshObject extends Object3D{
         var vertices = geometryPrimitive.vertices;
         var indices = geometryPrimitive.indices;
         var normals = geometryPrimitive.normals;
+        var uvCoordinates = geometryPrimitive.textureCoords;
 
         this.indexBuffer = gl.createBuffer();
         if( !this.indexBuffer){
@@ -105,6 +113,7 @@ class MeshObject extends Object3D{
 
         this.vertexBuffer = initArrayBuffer(gl, vertices, 3, gl.FLOAT, 'a_Position');
         this.normalBuffer = initArrayBuffer(gl, normals, 3, gl.FLOAT, 'a_Normal');
+        if( uvCoordinates != null ) this.uvBuffer = initArrayBuffer(gl, uvCoordinates, 3, gl.FLOAT, 'a_TexCoord');
 
         // Write the indices to buffer
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);

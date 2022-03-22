@@ -16,6 +16,7 @@ class Primitive{
     vertices;
     indices;
     normals;
+    textureCoords;
 
     constructor(height, width, depth){
         this.height = height;
