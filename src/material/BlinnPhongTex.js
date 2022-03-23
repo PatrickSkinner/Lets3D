@@ -1,4 +1,6 @@
 class BlinnPhongTex extends Material{
+    isTextured = true;
+
     VSHADER_SOURCE=
     'attribute vec4 a_Position;\n' +
     'attribute vec4 a_Normal;\n' +
