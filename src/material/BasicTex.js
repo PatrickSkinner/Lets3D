@@ -26,12 +26,12 @@ class BasicTex extends Material{
         'gl_FragColor = texture2D(u_texture, v_TexCoord);\n' +
     '}\n';
 
-    constructor(){
+    constructor(texture){
         super();
         this.vertexShader = this.VSHADER_SOURCE;
         this.fragmentShader = this.FSHADER_SOURCE;
 
-        this.initializeTexture('/carmackpo2.png');
+        this.initializeTexture(texture);
     }
 
     initializeMaterial(lights){

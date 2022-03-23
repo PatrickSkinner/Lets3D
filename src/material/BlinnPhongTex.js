@@ -101,12 +101,12 @@ class BlinnPhongTex extends Material{
         'gl_FragColor = vec4(result.rgb, texColor.a);\n' +
     '}\n';
 
-    constructor(shininess){
+    constructor(texture, shininess){
         super();
         this.shininess = shininess;
         this.vertexShader = this.VSHADER_SOURCE;
         this.fragmentShader = this.FSHADER_SOURCE;
-        this.initializeTexture('/carmackpo2.png');
+        this.initializeTexture(texture);
     }
 
     initializeMaterial(lights){

@@ -30,7 +30,7 @@ function main(){
     pivot.addChild(camera);
 
     var geometry1 = new Cube(2,2,2);
-    var material1 = new BlinnPhongTex(64.0);
+    var material1 = new BlinnPhongTex("carmackpo2.png", 64.0);
     var object1 = new MeshObject(geometry1, material1);
     scene.add(object1);
 
