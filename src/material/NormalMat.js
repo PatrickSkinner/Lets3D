@@ -11,7 +11,12 @@ class NormalMat extends Material{
 
     'void main() {\n'+
         'gl_Position = u_ViewMatrix * a_Position;\n'+
-        'v_Normal = normalize(vec3(u_NormalMatrix * a_Normal));\n'+ // Normalise length to 1
+        'mat4 vnMat = u_ViewMatrix;\n'+
+        'vnMat[3][0] = 0.0;\n'+
+        'vnMat[3][1] = 0.0;\n'+
+        'vnMat[3][2] = 0.0;\n'+
+        'vec3 world_Normal = normalize(vec3( vnMat * a_Normal));\n'+ // Normalise length to 1
+        'v_Normal = world_Normal;\n'+
     '}\n';
 
     FSHADER_SOURCE = 

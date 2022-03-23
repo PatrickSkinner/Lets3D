@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title> Depth Material Demo </title>
+    </head>
+
+    <body onload="main()">
+    <canvas id="example" width="640" height="640">
+    </canvas>
+    
+    <script src="/src/gl-matrix.js"></script>
+    <script type="text/javascript">
+        const {mat2, mat3, mat4, vec2, vec3, vec4, quat} = glMatrix;
+    </script>
+    <script src="/src/l3d.js"></script>
+    <script src="/src/geometry/Primitive.js"></script>
+    <script src="/src/geometry/Sphere.js"></script>
+    <script src="/src/geometry/Plane.js"></script>
+    <script src="/src/geometry/Cube.js"></script>
+    <script src="/src/object/Scene.js"></script>
+    <script src="/src/object/Object3D.js"></script>
+    <script src="/src/object/MeshObject.js"></script>
+    <script src="/src/object/Camera.js"></script>
+    <script src="/src/material/Material.js"></script>
+    <script src="/src/material/BasicMat.js"></script>
+    <script src="/src/material/NormalMat.js"></script>
+    <script src="/src/object/lighting/Light.js"></script>
+    <script src="/demos/NormalMatDemo.js"></script>
+</body>    
+</html>
