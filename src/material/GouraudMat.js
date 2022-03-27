@@ -110,7 +110,7 @@ class GouraudMat extends Material{
 
             if(lights[i] instanceof AmbientLight){
                 var u_AmbientLight = gl.getUniformLocation(gl.program, 'u_AmbientLight');
-                gl.uniform3fv(u_AmbientLight, lights[i].ambient);
+                gl.uniform3f(u_AmbientLight, lights[i].ambient[0], lights[i].ambient[1], lights[i].ambient[2]);
             }
         }
     }
