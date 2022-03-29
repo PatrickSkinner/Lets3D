@@ -48,9 +48,35 @@ class Scene{
      * @param gl Program
      */
     renderScene(gl){
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.clearColor(this.cColor[0], this.cColor[1], this.cColor[2], this.cColor[3]);
         gl.enable(gl.DEPTH_TEST);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        this.objectList.forEach(element => {
+            if(element instanceof Object3D){
+                if(!element.parent){ // Root node
+                    element.update();
+                }
+            }
+            if(element instanceof MeshObject){
+                element.draw(gl, this.activeCamera, this.lightList);
+                if(this.showNormals) element.drawNormals(gl, this.activeCamera);
+            }
+            if( this.showLights && element instanceof Light){
+                element.drawLight(gl, this.activeCamera);
+            }
+        });
+    }
+
+    renderSceneToTarget(gl, target){
+        gl.bindFramebuffer(gl.FRAMEBUFFER, target.fb);
+        gl.viewport(0, 0, target.width, target.height);
+        gl.clearColor(this.cColor[0], this.cColor[1], this.cColor[2], this.cColor[3]);
+        gl.enable(gl.DEPTH_TEST);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
         this.objectList.forEach(element => {
             if(element instanceof Object3D){
                 if(!element.parent){ // Root node
