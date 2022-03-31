@@ -1,5 +1,8 @@
 // Combination of Mesh and Material
-class MeshObject extends Object3D{
+import { Object3D } from './Object3D.js';
+import { initShaders, initArrayBuffer } from '../Core.js';
+
+export class MeshObject extends Object3D{
     geometry;
     material;
 
@@ -72,7 +75,7 @@ class MeshObject extends Object3D{
         gl.uniformMatrix4fv(u_NormalMatrix, false, normalMatrix);
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.worldTransform);
 
-        this.material.initializeMaterial(lights);
+        this.material.initializeMaterial(gl, lights);
         gl.drawElements(gl.TRIANGLES, this.vCount, gl.UNSIGNED_INT, 0);
     }
 

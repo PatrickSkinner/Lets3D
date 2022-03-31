@@ -1,4 +1,6 @@
-class NormalMat extends Material{
+import { Material } from './Material.js';
+
+export class NormalMat extends Material{
     VSHADER_SOURCE=
     'attribute vec4 a_Position;\n' +
     'attribute vec4 a_Normal;\n' +
@@ -38,6 +40,6 @@ class NormalMat extends Material{
         this.fragmentShader = this.FSHADER_SOURCE;
     }
 
-    initializeMaterial(lights){
+    initializeMaterial(gl, lights){
     }
 }

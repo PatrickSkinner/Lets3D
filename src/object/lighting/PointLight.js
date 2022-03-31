@@ -1,4 +1,6 @@
-class PointLight extends Light{
+import { Light } from './Light.js';
+
+export class PointLight extends Light{
 
     constructor(diffuse, specular){
         super();

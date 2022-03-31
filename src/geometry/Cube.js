@@ -1,4 +1,6 @@
-class Cube extends Primitive{
+import { Primitive } from './Primitive.js';
+
+export class Cube extends Primitive{
     /**
      * Cube constructor
      * @param width along the X axis

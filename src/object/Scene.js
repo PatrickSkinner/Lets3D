@@ -1,4 +1,8 @@
-class Scene{
+import {Light} from './lighting/Light.js'
+import {Object3D} from './Object3D.js'
+import {MeshObject} from './MeshObject.js'
+
+export class Scene{
 
     activeCamera; 
     objectList;

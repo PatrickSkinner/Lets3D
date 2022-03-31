@@ -1,4 +1,6 @@
-class Object3D{
+import { createVector3, createVector4 } from '../Core.js'
+
+export class Object3D{
     constructor(){
         this.transform = mat4.create()
         this.worldTransform = mat4.create()

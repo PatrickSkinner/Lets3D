@@ -1,5 +1,8 @@
-class RenderTexture extends Material{
+import { Material } from './Material.js';
+
+export class RenderTexture extends Material{
     isTextured = true;
+    textureInitialized = false;
 
     VSHADER_SOURCE=
     'attribute vec4 a_Position;\n' +
@@ -33,17 +36,18 @@ class RenderTexture extends Material{
         this.vertexShader = this.VSHADER_SOURCE;
         this.fragmentShader = this.FSHADER_SOURCE;
 
-        this.fb = gl.createFramebuffer();
         this.width = width;
         this.height = height;
 
-        this.initializeTexture();
+        //this.initializeTexture();
     }
 
-    initializeMaterial(lights){
+    initializeMaterial(gl, lights){
+        if(!this.textureInitialized) this.initializeTexture(gl);
     }
 
-    initializeTexture(){
+    initializeTexture(gl){
+        this.fb = gl.createFramebuffer();
         var texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, texture);
         
@@ -90,5 +94,6 @@ class RenderTexture extends Material{
         
         // Rebind texture to draw to surface
         gl.bindTexture(gl.TEXTURE_2D, texture);
+        this.textureInitialized = true;
     }
 }

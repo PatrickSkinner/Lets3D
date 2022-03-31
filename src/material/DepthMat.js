@@ -1,4 +1,6 @@
-class DepthMat extends Material{
+import { Material } from './Material.js';
+
+export class DepthMat extends Material{
     VSHADER_SOURCE=
     'attribute vec4 a_Position;\n' +
     'attribute vec4 a_Normal;\n' +
@@ -29,6 +31,6 @@ class DepthMat extends Material{
         this.fragmentShader = this.FSHADER_SOURCE;
     }
 
-    initializeMaterial(lights){
+    initializeMaterial(gl, lights){
     }
 }

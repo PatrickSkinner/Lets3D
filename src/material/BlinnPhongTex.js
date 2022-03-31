@@ -1,5 +1,11 @@
-class BlinnPhongTex extends Material{
+import { Material } from './Material.js';
+import { PointLight } from '../object/lighting/PointLight.js';
+import { DirectionalLight } from '../object/lighting/DirectionalLight.js';
+import { AmbientLight } from '../object/lighting/AmbientLight.js';
+
+export class BlinnPhongTex extends Material{
     isTextured = true;
+    textureInitialized = false;
 
     VSHADER_SOURCE=
     'attribute vec4 a_Position;\n' +
@@ -108,10 +114,12 @@ class BlinnPhongTex extends Material{
         this.shininess = shininess;
         this.vertexShader = this.VSHADER_SOURCE;
         this.fragmentShader = this.FSHADER_SOURCE;
-        this.initializeTexture(texture);
+        this.textureName = texture;
+        //this.initializeTexture(texture);
     }
 
-    initializeMaterial(lights){
+    initializeMaterial(gl, lights){
+        if(!this.textureInitialized) this.initializeTexture(gl, this.textureName);
         var u_SpecularAmount = gl.getUniformLocation(gl.program, 'u_SpecularAmount');
         gl.uniform1f(u_SpecularAmount, this.shininess);
 
@@ -146,7 +154,7 @@ class BlinnPhongTex extends Material{
         }
     }
 
-    initializeTexture(textureName){
+    initializeTexture(gl, textureName){
         var texture = gl.createTexture();
         gl.activeTexture(gl.TEXTURE0+0);
         gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -161,5 +169,7 @@ class BlinnPhongTex extends Material{
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
             gl.generateMipmap(gl.TEXTURE_2D);
         });
+
+        this.textureInitialized = true;
     }
 }

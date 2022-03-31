@@ -4,7 +4,7 @@
  * @param fShader Fragment shader program passed as a string
  * @returns 
  */
-function initShaders(gl, vShader, fShader){
+export function initShaders(gl, vShader, fShader){
 
     // Compile shader objects
     var vertexShader = createShader(gl, gl.VERTEX_SHADER, vShader);
@@ -29,7 +29,7 @@ function initShaders(gl, vShader, fShader){
  * @param fragmentShader Compiled fragment shader object
  * @returns returns program, or null object on failure
  */
-function createProgram(gl, vertexShader, fragmentShader) {
+export function createProgram(gl, vertexShader, fragmentShader) {
     //Create program object
     var program = gl.createProgram();
 
@@ -56,7 +56,7 @@ function createProgram(gl, vertexShader, fragmentShader) {
  * @param source Shader program passed as a string
  * @returns return shader object, or null object on failure
  */
-function createShader(gl, type, source){
+ export function createShader(gl, type, source){
     // Create shader object
     var shader = gl.createShader(type);
 
@@ -85,7 +85,7 @@ function createShader(gl, type, source){
  * @param attribute Attribute variable name
  * @returns True, if buffer successfully created and assigned to attribute variable.
  */
-function initArrayBuffer(gl, data, num, type, attribute) {
+ export function initArrayBuffer(gl, data, num, type, attribute) {
 
     // Create buffer object
     var buffer = gl.createBuffer();
@@ -121,7 +121,7 @@ function initArrayBuffer(gl, data, num, type, attribute) {
  * @param {*} z 
  * @returns 
  */
-function createVector3(x, y, z){
+ export function createVector3(x, y, z){
     let v = vec3.create();
     vec3.set(v, x, y, z);
     return v;
@@ -132,7 +132,7 @@ function createVector3(x, y, z){
  * @param {*} vec A Vector3
  * @returns 
  */
-function normalizeVector3(vec){
+ export function normalizeVector3(vec){
     let v = vec3.create();
     vec3.normalize(v, vec);
     return v;
@@ -146,7 +146,7 @@ function normalizeVector3(vec){
  * @param {*} w 
  * @returns 
  */
-function createVector4(x, y, z, w){
+ export function createVector4(x, y, z, w){
     let v = vec4.create();
     vec4.set(v, x, y, z, w);
     return v;
@@ -157,7 +157,7 @@ function createVector4(x, y, z, w){
  * @param {*} vec A Vector4
  * @returns 
  */
-function normalizeVector4(vec){
+ export function normalizeVector4(vec){
     let v = vec4.create();
     createVector4.normalize(v, vec);
     return v;

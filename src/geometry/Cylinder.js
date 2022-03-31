@@ -1,4 +1,7 @@
-class Cylinder extends Primitive{
+import { Primitive } from './Primitive.js';
+import { createVector3, normalizeVector3 } from '../Core.js'
+
+export class Cylinder extends Primitive{
     constructor(radius, length, segments){
         super(radius*2, length, radius*2);
 

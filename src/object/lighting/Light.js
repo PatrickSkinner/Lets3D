@@ -1,4 +1,12 @@
-class Light extends Object3D{
+import { Object3D } from '../Object3D.js';
+/*
+import { PointLight } from './PointLight.js';
+import { DirectionalLight } from './DirectionalLight.js';
+import { AmbientLight } from './AmbientLight.js';
+*/
+import { createVector3 } from '../../Core.js'
+
+export class Light extends Object3D{
 
     vertexBuffer;
     vCount;

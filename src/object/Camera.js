@@ -1,4 +1,6 @@
-class Camera extends Object3D{
+import { Object3D } from './Object3D.js';
+
+export class Camera extends Object3D{
     projectionMatrix;
     mvpMatrix;
 

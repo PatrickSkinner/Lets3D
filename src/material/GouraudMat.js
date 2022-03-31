@@ -1,4 +1,10 @@
-class GouraudMat extends Material{
+import { Material } from './Material.js';
+import { PointLight } from '../object/lighting/PointLight.js';
+import { DirectionalLight } from '../object/lighting/DirectionalLight.js';
+import { AmbientLight } from '../object/lighting/AmbientLight.js';
+import { createVector4 } from '../Core.js'
+
+export class GouraudMat extends Material{
     VSHADER_SOURCE=
     '#define MAX_POINT_LIGHTS 64\n'+  
     'precision mediump float;\n' +
@@ -82,7 +88,7 @@ class GouraudMat extends Material{
         this.fragmentShader = this.FSHADER_SOURCE;
     }
 
-    initializeMaterial(lights){
+    initializeMaterial(gl, lights){
 
         var u_Color = gl.getUniformLocation(gl.program, 'u_Color');
         gl.uniform4f(u_Color, this.color[0], this.color[1], this.color[2], this.color[3]);

@@ -1,4 +1,7 @@
-class DirectionalLight extends Light{
+import { Light } from './Light.js';
+import { createVector3 } from '../../Core.js'
+
+export class DirectionalLight extends Light{
 
     constructor(diffuse, specular, direction){
         super();

@@ -1,4 +1,7 @@
-class Sphere extends Primitive{
+import { Primitive } from './Primitive.js';
+import { createVector3, normalizeVector3 } from '../Core.js'
+
+export class Sphere extends Primitive{
     constructor(radius, xSegments, ySegments){
         super(radius*2, radius*2, radius*2);
 

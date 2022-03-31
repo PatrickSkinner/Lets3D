@@ -1,4 +1,6 @@
-class Plane extends Primitive{
+import { Primitive } from './Primitive.js';
+
+export class Plane extends Primitive{
     constructor(width, height){
         super(width, height, 0.0);
 

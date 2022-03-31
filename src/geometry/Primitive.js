@@ -1,7 +1,7 @@
 /**
  * Base class for geometry primitives.
  */
-class Primitive{
+export class Primitive{
     // Parameters
     width;
     height;
