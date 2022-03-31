@@ -114,24 +114,49 @@ function initArrayBuffer(gl, data, num, type, attribute) {
     return buffer; // Success
 }
 
+/**
+ * Create a Vector3 from given components.
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} z 
+ * @returns 
+ */
 function createVector3(x, y, z){
     let v = vec3.create();
     vec3.set(v, x, y, z);
     return v;
 }
 
+/**
+ * Return the normalized input Vector3.
+ * @param {*} vec A Vector3
+ * @returns 
+ */
 function normalizeVector3(vec){
     let v = vec3.create();
     vec3.normalize(v, vec);
     return v;
 }
 
+/**
+ * Create a Vector4 from given components.
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} z 
+ * @param {*} w 
+ * @returns 
+ */
 function createVector4(x, y, z, w){
     let v = vec4.create();
     vec4.set(v, x, y, z, w);
     return v;
 }
 
+/**
+ * Return the normalized input Vector4.
+ * @param {*} vec A Vector4
+ * @returns 
+ */
 function normalizeVector4(vec){
     let v = vec4.create();
     createVector4.normalize(v, vec);
