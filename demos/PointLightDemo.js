@@ -19,7 +19,7 @@ function init(){
     }
 
     scene = new L3D.Scene();
-    scene.showLights = true;
+    scene.showLights = false;
 
     let pivot = new L3D.Object3D();
     scene.add(pivot);

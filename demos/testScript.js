@@ -1,7 +1,12 @@
+import * as L3D from '/src/L3D.js';
+import { createVector3 } from '../src/Core.js';
+
 var gl;
 var scene;
 
-function main(){
+init();
+
+function init(){
     var canvas = document.getElementById('example');
     if(!canvas){
         console.log('Failed to retrieve canvas element');
@@ -14,56 +19,41 @@ function main(){
         return;
     }
 
-    scene = new Scene();
+    scene = new L3D.Scene();
 
-    let pivot = new Object3D();
+    let pivot = new L3D.Object3D();
     scene.add(pivot);
-    let camera = new Camera(0.52, 1, 1, 100);
-    camera.transformLookAt(0, 4, 12, 0, 0, 0, 0, 1, 0);
+    let camera = new L3D.Camera(0.52, 1, 1, 100);
+    camera.transformLookAt(0, 4, 9, 0, 0, 0, 0, 1, 0);
 
     scene.setActiveCamera( camera );
 
     scene.setClearColor(0.5, 0.5, 1.0, 1.0);
-    scene.showNormals = false; // Visualise vertex normals
-    scene.showLights = true; // Visualise lights
     scene.add(camera);
     pivot.addChild(camera);
 
-    var geometry1 = new Cube(2,2,2);
-    var material1 = new BlinnPhongTex("carmackpo2.png", 64.0);
-    var object1 = new MeshObject(geometry1, material1);
+    var bpMaterial = new L3D.GouraudMat(1.0, 1.0, 1.0, 64);
+
+    var texMat = new L3D.BlinnPhongTex('testtexture.png', 32.0);
+    var geometry1 = new L3D.Cube(2, 2, 2);
+    var object1 = new L3D.MeshObject(geometry1, texMat);
     scene.add(object1);
 
-    var geometry2 = new Sphere(0.5, 24, 12);
-    var material2 = new BlinnPhongMat(1.0, 1.0, 1.0, 64);
-    var object2 = new MeshObject(geometry2, material2);
+    var geometry2 = new L3D.Sphere(0.5, 24, 12);
+    var object2 = new L3D.MeshObject(geometry2, bpMaterial);
     object2.translate(0,0,2);
     scene.add(object2);
-    pivot.addChild(object2);
+    object1.addChild(object2);
 
-    var pl = new PointLight(createVector3(1.0, 0.0, 0.0), createVector3(0.8, 0.8, 0.8) );
-    pl.translate(-10, 5, 10);
-    //scene.add(pl);
-
-    var pl2 = new PointLight(createVector3(0.0, 0.0, 1.0), createVector3(0.8, 0.8, 0.8) );
-    pl2.translate(2, 1.5, 2);
-    scene.add(pl2);
-
-    var dl = new DirectionalLight( createVector3(1.0, 0.0, 0.0), createVector3(0.8, 0.8, 0.8), createVector3(0, -1, 0) );
+    var dl = new L3D.DirectionalLight( createVector3(1.0, 1.0, 1.0), createVector3(0.8, 0.8, 0.8), createVector3(0, -1, -1) );
     dl.setPosition(0,2,0);
     scene.add(dl);
-
-    var dl2 = new DirectionalLight( createVector3(1.0, 0.0, 0.0), createVector3(0.8, 0.8, 0.8), createVector3(1, 1, 0) );
-    //scene.add(dl2);
-
-    var al = new AmbientLight( createVector3(0.1, 0.1, 0.1));
-    //scene.add(al);
 
     window.requestAnimationFrame(draw);
 }
 
 function draw(timestamp){
-    scene.renderScene(gl);
-    scene.objectList[1].rotate(-1/500, 0, 1, 0);
+    scene.renderScene(gl); // Render scene to canvas
+    scene.objectList[2].rotate(-1/500, 0, 1, 0);
     window.requestAnimationFrame(draw);
 }
