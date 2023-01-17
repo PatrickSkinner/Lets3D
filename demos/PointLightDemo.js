@@ -19,7 +19,7 @@ function init(){
     }
 
     scene = new L3D.Scene();
-    scene.showLights = false;
+    scene.showLights = true;
 
     let pivot = new L3D.Object3D();
     scene.add(pivot);
@@ -38,9 +38,9 @@ function init(){
     sphere.translate(1.75, 0.5, -0.5);
     scene.add(sphere);
 
-    var cube = new L3D.MeshObject(sphereGeometry, bpMaterial);
-    cube.translate(-1.75, 0.5, -0.5);
-    scene.add(cube);
+    var sphere2 = new L3D.MeshObject(sphereGeometry, bpMaterial);
+    sphere2.translate(-1.75, 0.5, -0.5);
+    scene.add(sphere2);
 
     var bpMaterial2 = new L3D.BlinnPhongMat(1.0, 1.0, 1.0, 255);
     var planeGeometry = new L3D.Plane(8, 8);
