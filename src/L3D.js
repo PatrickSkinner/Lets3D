@@ -12,6 +12,7 @@ export { Light } from './object/lighting/Light.js';
 export { PointLight } from './object/lighting/PointLight.js';
 export { AmbientLight } from './object/lighting/AmbientLight.js';
 export { DirectionalLight } from './object/lighting/DirectionalLight.js';
+export { SpotLight } from './object/lighting/SpotLight.js';
 export { Material } from './material/Material.js';
 export { BasicMat } from './material/BasicMat.js';
 export { BasicTex } from './material/BasicTex.js';

@@ -1,8 +1,9 @@
 import { Material } from './Material.js';
 import { PointLight } from '../object/lighting/PointLight.js';
 import { DirectionalLight } from '../object/lighting/DirectionalLight.js';
+import { SpotLight } from '../object/lighting/SpotLight.js';
 import { AmbientLight } from '../object/lighting/AmbientLight.js';
-import { createVector4 } from '../Core.js'
+import { createVector3, createVector4 } from '../Core.js'
 
 export class BlinnPhongMat extends Material{
     VSHADER_SOURCE=
@@ -43,9 +44,18 @@ export class BlinnPhongMat extends Material{
         'vec3 specular;\n' +   
     '};\n' +
 
-    'uniform DirectionalLight dirLight;\n'+
+    'struct SpotLight {\n' +  
+        'vec3 direction;\n'+ 
+        'vec3 position;\n' +   
+        'vec3 diffuse;\n' +   
+        'vec3 specular;\n' +   
+        'float cutoff;\n'+
+    '};\n' +
+
     'uniform PointLight pointLights[MAX_POINT_LIGHTS];\n'+
     'uniform int u_numLights;\n'+
+    'uniform DirectionalLight dirLight;\n'+
+    'uniform SpotLight sptLight;\n'+
 
     'uniform vec3 u_CameraPosition;\n' + // Position of the camera
     'uniform float u_SpecularAmount;\n' +   // How shiny the surface is
@@ -88,6 +98,30 @@ export class BlinnPhongMat extends Material{
         'return color;\n'+
     '}\n' + 
 
+    'vec3 CalcSpotLight( SpotLight light, vec3 normal, vec3 viewDirection){\n' +   
+        //'vec3 lightDirection = -normalize(light.direction);\n' + // Normalised light direction
+
+        'vec3 lightDirection = normalize(light.position - v_Position);\n'+
+        'vec3 spotlightDirection = -normalize(light.direction);\n'+
+        'float theta = dot(lightDirection, spotlightDirection);\n'+
+
+        'if(theta > light.cutoff){\n'+
+            'float nDotL = max( dot(lightDirection, normal), 0.0);\n' +
+            'float specular = 0.0;\n'+
+
+            'if (nDotL > 0.0) {\n'+
+                'vec3 halfwayVector = normalize(lightDirection + viewDirection);\n'+
+                'float specularAngle = max( dot(halfwayVector, normal), 0.0);\n'+
+                'specular = pow(specularAngle, u_SpecularAmount);\n'+
+            '}\n'+
+
+            'vec3 color =  (light.diffuse* v_Color.rgb * nDotL) + (light.specular * specular);\n' +
+            'return color;\n'+
+        '}\n'+
+        'vec3 color =  vec3(0,0,0);\n' +
+        'return color;\n'+
+    '}\n'+
+
     'void main() {\n' +
         'vec3 normal = normalize(v_Normal);\n' + // Normalise interpolated normal
         'vec3 viewDirection = normalize(v_Position);\n'+
@@ -97,6 +131,7 @@ export class BlinnPhongMat extends Material{
         '}\n'+
 
         'result += CalcDirectionalLight(dirLight, normal, viewDirection);\n'+
+        'result += CalcSpotLight(sptLight, normal, viewDirection);\n'+
 
         'result += (u_AmbientLight*v_Color.rgb);\n'+
         
@@ -142,6 +177,16 @@ export class BlinnPhongMat extends Material{
                 gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.diffuse"), dif[0], dif[1], dif[2]);
                 gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.specular"), spec[0], spec[1], spec[2]);
                 gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.direction"), dir[0], dir[1], dir[2]);
+            }
+
+            if(lights[i] instanceof SpotLight){
+                let pos = lights[i].getPosition();
+                let dif = lights[i].diffuse;
+                let dir = lights[i].direction;
+                gl.uniform3f(gl.getUniformLocation(gl.program, "sptLight.position"), pos[0], pos[1], pos[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "sptLight.diffuse"), dif[0], dif[1], dif[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "sptLight.direction"), dir[0], dir[1], dir[2]);
+                gl.uniform1f(gl.getUniformLocation(gl.program, "sptLight.cutoff"), lights[i].cutoff);
             }
 
             if(lights[i] instanceof AmbientLight){

@@ -2,6 +2,7 @@ import { Material } from './Material.js';
 import { PointLight } from '../object/lighting/PointLight.js';
 import { DirectionalLight } from '../object/lighting/DirectionalLight.js';
 import { AmbientLight } from '../object/lighting/AmbientLight.js';
+import { SpotLight } from '../object/lighting/SpotLight.js';
 import { createVector4 } from '../Core.js'
 
 export class GouraudMat extends Material{
@@ -23,9 +24,18 @@ export class GouraudMat extends Material{
         'vec3 specular;\n' +   
     '};\n' +
 
+    'struct SpotLight {\n' +  
+        'vec3 direction;\n'+ 
+        'vec3 position;\n' +   
+        'vec3 diffuse;\n' +   
+        'vec3 specular;\n' +   
+        'float cutoff;\n'+
+    '};\n' +
+
     'uniform PointLight pointLights[MAX_POINT_LIGHTS];\n'+
     'uniform int u_numLights;\n'+
     'uniform DirectionalLight dirLight;\n'+
+    'uniform SpotLight sptLight;\n'+
 
     'attribute vec4 a_Position;\n' +
     'attribute vec4 a_Normal;\n' +
@@ -52,6 +62,16 @@ export class GouraudMat extends Material{
         'v_LightColor += nDotL*light.diffuse;\n'+
     '}\n' +   
 
+    'void CalcSpotLight( SpotLight light ){\n' +  
+        'vec3 lightDirection = normalize(light.position - v_Position);\n'+
+        'vec3 spotlightDirection = -normalize(light.direction);\n'+
+        'float theta = dot(lightDirection, spotlightDirection);\n'+
+        'if(theta > light.cutoff){\n'+
+            'float nDotL = max( dot(lightDirection, v_Normal), 0.0);\n' +
+            'v_LightColor += nDotL*light.diffuse;\n'+
+        '}\n'+
+    '}\n' +   
+
     'void main() {\n'+
         'gl_Position = u_ViewMatrix * a_Position;\n'+
         'v_Position = vec3(u_ModelMatrix * a_Position);\n' + // Vertex position in world coords
@@ -63,7 +83,7 @@ export class GouraudMat extends Material{
         '}\n'+
 
         'CalcDirectionalLight(dirLight);\n'+
-    
+        'CalcSpotLight(sptLight);\n'+
     '}\n';
 
     FSHADER_SOURCE = 
@@ -112,6 +132,16 @@ export class GouraudMat extends Material{
                 gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.position"), pos[0], pos[1], pos[2]);
                 gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.diffuse"), dif[0], dif[1], dif[2]);
                 gl.uniform3f(gl.getUniformLocation(gl.program, "dirLight.direction"), dir[0], dir[1], dir[2]);
+            }
+
+            if(lights[i] instanceof SpotLight){
+                let pos = lights[i].getPosition();
+                let dif = lights[i].diffuse;
+                let dir = lights[i].direction;
+                gl.uniform3f(gl.getUniformLocation(gl.program, "sptLight.position"), pos[0], pos[1], pos[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "sptLight.diffuse"), dif[0], dif[1], dif[2]);
+                gl.uniform3f(gl.getUniformLocation(gl.program, "sptLight.direction"), dir[0], dir[1], dir[2]);
+                gl.uniform1f(gl.getUniformLocation(gl.program, "sptLight.cutoff"), lights[i].cutoff);
             }
 
             if(lights[i] instanceof AmbientLight){
