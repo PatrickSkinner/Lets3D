@@ -5,31 +5,31 @@ export class BasicTex extends Material{
     textureInitialized = false;
 
     VSHADER_SOURCE=
-    'attribute vec4 a_Position;\n' +
-    'attribute vec2 a_TexCoord;\n' +
-    'attribute vec4 a_Normal;\n' +
+    `attribute vec4 a_Position;
+    attribute vec2 a_TexCoord;
+    attribute vec4 a_Normal;
 
-    'uniform mat4 u_ViewMatrix;\n' +
-    'uniform mat4 u_ModelMatrix;\n' +    // Model matrix
-    'uniform mat4 u_NormalMatrix;\n' +   // Transformation matrix of the normal
+    uniform mat4 u_ViewMatrix;
+    uniform mat4 u_ModelMatrix;    // Model matrix
+    uniform mat4 u_NormalMatrix;   // Transformation matrix of the normal
 
-    'varying vec2 v_TexCoord;\n' +
+    varying vec2 v_TexCoord;
 
-    'void main() {\n'+
-        'gl_Position = u_ViewMatrix * a_Position;\n'+
-        'v_TexCoord = a_TexCoord;\n'+
-        'a_Normal;\n'+
-    '}\n';
+    void main() {
+        gl_Position = u_ViewMatrix * a_Position;
+        v_TexCoord = a_TexCoord;
+        a_Normal;
+    }`;
 
     FSHADER_SOURCE = 
-    'precision mediump float;\n' +
-    'uniform sampler2D u_texture;\n'+
+    `precision mediump float;
+    uniform sampler2D u_texture;
 
-    'varying vec2 v_TexCoord;\n' +
+    varying vec2 v_TexCoord;
 
-    'void main() {\n' +
-        'gl_FragColor = texture2D(u_texture, v_TexCoord);\n' +
-    '}\n';
+    void main() {
+        gl_FragColor = texture2D(u_texture, v_TexCoord);
+    }`;
 
     constructor(texture){
         super();

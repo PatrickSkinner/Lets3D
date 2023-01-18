@@ -3,24 +3,25 @@ import { createVector4 } from '../Core.js'
 
 export class BasicMat extends Material{
     VSHADER_SOURCE=
-    'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Normal;\n' +
+    `attribute vec4 a_Position;
+    attribute vec4 a_Normal;
 
-    'uniform mat4 u_ViewMatrix;\n' +
-    'uniform mat4 u_ModelMatrix;\n' +    // Model matrix
-    'uniform mat4 u_NormalMatrix;\n' +   // Transformation matrix of the normal
-    'void main() {\n'+
-        'gl_Position = u_ViewMatrix * a_Position;\n'+
-        'a_Normal;\n'+
-    '}\n';
+    uniform mat4 u_ViewMatrix;
+    uniform mat4 u_ModelMatrix;    // Model matrix
+    uniform mat4 u_NormalMatrix;   // Transformation matrix of the normal
+
+    void main() {
+        gl_Position = u_ViewMatrix * a_Position;
+        a_Normal;
+    }`;
 
     FSHADER_SOURCE = 
-    'precision mediump float;\n' +
-    'uniform vec4 u_Color;\n' +   // Material Color
+    `precision mediump float;
+    uniform vec4 u_Color;   // Material Color
 
-    'void main() {\n' +
-        'gl_FragColor = u_Color;\n' +
-    '}\n';
+    void main() {
+        gl_FragColor = u_Color;
+    }`;
 
     constructor(colorR, colorG, colorB){
         super();

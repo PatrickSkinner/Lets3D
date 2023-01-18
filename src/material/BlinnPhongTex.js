@@ -8,106 +8,106 @@ export class BlinnPhongTex extends Material{
     textureInitialized = false;
 
     VSHADER_SOURCE=
-    'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Normal;\n' +
-    'attribute vec2 a_TexCoord;\n' +
+    `attribute vec4 a_Position;
+    attribute vec4 a_Normal;
+    attribute vec2 a_TexCoord;
 
-    'uniform mat4 u_ViewMatrix;\n' +
-    'uniform mat4 u_ModelMatrix;\n' +    // Model matrix
-    'uniform mat4 u_NormalMatrix;\n' +   // Transformation matrix of the normal
+    uniform mat4 u_ViewMatrix;
+    uniform mat4 u_ModelMatrix;    // Model matrix
+    uniform mat4 u_NormalMatrix;   // Transformation matrix of the normal
 
-    'varying vec3 v_Normal;\n' +
-    'varying vec3 v_Position;\n' +
-    'varying vec2 v_TexCoord;\n' +
+    varying vec3 v_Normal;
+    varying vec3 v_Position;
+    varying vec2 v_TexCoord;
 
-    'void main() {\n'+
-        'gl_Position = u_ViewMatrix * a_Position;\n'+
-        'v_Position = vec3(u_ModelMatrix * a_Position);\n' + // Vertex position in world coords
-        'v_Normal = normalize(vec3(u_NormalMatrix * a_Normal));\n'+ // Normalise length to 1
-        'v_TexCoord = a_TexCoord;\n'+
-    '}\n';
+    void main() {
+        gl_Position = u_ViewMatrix * a_Position;
+        v_Position = vec3(u_ModelMatrix * a_Position); // Vertex position in world coords
+        v_Normal = normalize(vec3(u_NormalMatrix * a_Normal)); // Normalise length to 1
+        v_TexCoord = a_TexCoord;
+    }`;
 
     FSHADER_SOURCE = 
-    '#define MAX_POINT_LIGHTS 64\n'+  
-    'precision mediump float;\n' +
-    'precision mediump int;\n' +
+    `#define MAX_POINT_LIGHTS 64  
+    precision mediump float;
+    precision mediump int;
 
-    'struct PointLight {\n' +   
-        'vec3 position;\n' +   
-        'vec3 diffuse;\n' +   
-        'vec3 specular;\n' +   
-    '};\n' +
+    struct PointLight {   
+        vec3 position;   
+        vec3 diffuse;   
+        vec3 specular;   
+    };
 
-    'struct DirectionalLight {\n' +  
-        'vec3 direction;\n'+ 
-        'vec3 position;\n' +   
-        'vec3 diffuse;\n' +   
-        'vec3 specular;\n' +   
-    '};\n' +
+    struct DirectionalLight {  
+        vec3 direction; 
+        vec3 position;   
+        vec3 diffuse;   
+        vec3 specular;   
+    };
 
-    'uniform sampler2D u_texture;\n'+
-    'uniform DirectionalLight dirLight;\n'+
-    'uniform PointLight pointLights[MAX_POINT_LIGHTS];\n'+
-    'uniform int u_numLights;\n'+
+    uniform sampler2D u_texture;
+    uniform DirectionalLight dirLight;
+    uniform PointLight pointLights[MAX_POINT_LIGHTS];
+    uniform int u_numLights;
 
-    'uniform vec3 u_CameraPosition;\n' + // Position of the camera
-    'uniform float u_SpecularAmount;\n' +   // How shiny the surface is
-    'uniform vec3 u_AmbientLight;\n' +   // Ambient light color
+    uniform vec3 u_CameraPosition; // Position of the camera
+    uniform float u_SpecularAmount;   // How shiny the surface is
+    uniform vec3 u_AmbientLight;   // Ambient light color
 
-    'varying vec3 v_Normal;\n' +
-    'varying vec3 v_Position;\n' +
-    'varying vec2 v_TexCoord;\n' +
+    varying vec3 v_Normal;
+    varying vec3 v_Position;
+    varying vec2 v_TexCoord;
 
-    'vec3 CalcPointLight( PointLight light, vec3 normal, vec3 viewDirection){\n' +   
-        'vec3 lightDirection = light.position- v_Position;\n' + 
-        'lightDirection = normalize(lightDirection);\n' + // Normalised light direction
+    vec3 CalcPointLight( PointLight light, vec3 normal, vec3 viewDirection){   
+        vec3 lightDirection = light.position- v_Position; 
+        lightDirection = normalize(lightDirection); // Normalised light direction
 
-        'float nDotL = max( dot(lightDirection, normal), 0.0);\n' +
-        'float specular = 0.0;\n'+
+        float nDotL = max( dot(lightDirection, normal), 0.0);
+        float specular = 0.0;
 
-        'if (nDotL > 0.0) {\n'+
-            'vec3 halfwayVector = normalize(lightDirection + viewDirection);\n'+
-            'float specularAngle = max( dot(halfwayVector, normal), 0.0);\n'+
-            'specular = pow(specularAngle, u_SpecularAmount);\n'+
-        '}\n'+
+        if (nDotL > 0.0) {
+            vec3 halfwayVector = normalize(lightDirection + viewDirection);
+            float specularAngle = max( dot(halfwayVector, normal), 0.0);
+            specular = pow(specularAngle, u_SpecularAmount);
+        }
 
-        'vec4 texColor = texture2D(u_texture, v_TexCoord);\n'+
-        'vec3 color =  (light.diffuse* texColor.rgb * nDotL) + (light.specular * specular);\n' +
-        'return color;\n'+
-    '}\n' +   
+        vec4 texColor = texture2D(u_texture, v_TexCoord);
+        vec3 color =  (light.diffuse* texColor.rgb * nDotL) + (light.specular * specular);
+        return color;
+    }   
 
-    'vec3 CalcDirectionalLight( DirectionalLight light, vec3 normal, vec3 viewDirection){\n' +   
-        'vec3 lightDirection = -normalize(light.direction);\n' + // Normalised light direction
+    vec3 CalcDirectionalLight( DirectionalLight light, vec3 normal, vec3 viewDirection){   
+        vec3 lightDirection = -normalize(light.direction); // Normalised light direction
 
-        'float nDotL = max( dot(lightDirection, normal), 0.0);\n' +
-        'float specular = 0.0;\n'+
+        float nDotL = max( dot(lightDirection, normal), 0.0);
+        float specular = 0.0;
 
-        'if (nDotL > 0.0) {\n'+
-            'vec3 halfwayVector = normalize(lightDirection + viewDirection);\n'+
-            'float specularAngle = max( dot(halfwayVector, normal), 0.0);\n'+
-            'specular = pow(specularAngle, u_SpecularAmount);\n'+
-        '}\n'+
+        if (nDotL > 0.0) {
+            vec3 halfwayVector = normalize(lightDirection + viewDirection);
+            float specularAngle = max( dot(halfwayVector, normal), 0.0);
+            specular = pow(specularAngle, u_SpecularAmount);
+        }
 
-        'vec4 texColor = texture2D(u_texture, v_TexCoord);\n'+
-        'vec3 color =  (light.diffuse* texColor.rgb * nDotL) + (light.specular * specular);\n' +
-        'return color;\n'+
-    '}\n' + 
+        vec4 texColor = texture2D(u_texture, v_TexCoord);
+        vec3 color =  (light.diffuse* texColor.rgb * nDotL) + (light.specular * specular);
+        return color;
+    } 
 
-    'void main() {\n' +
-        'vec3 normal = normalize(v_Normal);\n' + // Normalise interpolated normal
-        'vec3 viewDirection = normalize(v_Position);\n'+
-        'vec4 texColor = texture2D(u_texture, v_TexCoord);\n'+
-        'vec3 result;\n'+
-        'for(int i = 0; i < MAX_POINT_LIGHTS; i++){\n'+ // TODO: This should be u_numLights
-            'result += CalcPointLight(pointLights[i], normal, viewDirection);\n'+
-        '}\n'+
+    void main() {
+        vec3 normal = normalize(v_Normal); // Normalise interpolated normal
+        vec3 viewDirection = normalize(v_Position);
+        vec4 texColor = texture2D(u_texture, v_TexCoord);
+        vec3 result;
+        for(int i = 0; i < MAX_POINT_LIGHTS; i++){ // TODO: This should be u_numLights
+            result += CalcPointLight(pointLights[i], normal, viewDirection);
+        }
 
-        'result += CalcDirectionalLight(dirLight, normal, viewDirection);\n'+
+        result += CalcDirectionalLight(dirLight, normal, viewDirection);
 
-        'result += (u_AmbientLight*texColor.rgb);\n'+
+        result += (u_AmbientLight*texColor.rgb);
         
-        'gl_FragColor = vec4(result.rgb, texColor.a);\n' +
-    '}\n';
+        gl_FragColor = vec4(result.rgb, texColor.a);
+    }`;
 
     constructor(texture, shininess){
         super();

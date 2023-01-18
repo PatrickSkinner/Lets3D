@@ -2,27 +2,27 @@ import { Material } from './Material.js';
 
 export class DepthMat extends Material{
     VSHADER_SOURCE=
-    'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Normal;\n' +
+    `attribute vec4 a_Position;
+    attribute vec4 a_Normal;
 
-    'uniform mat4 u_ViewMatrix;\n' +
-    'uniform mat4 u_ModelMatrix;\n' +    // Model matrix
-    'uniform mat4 u_NormalMatrix;\n' +   // Transformation matrix of the normal
-    'void main() {\n'+
-        'gl_Position = u_ViewMatrix * a_Position;\n'+
-        'a_Normal;\n'+
-    '}\n';
-
+    uniform mat4 u_ViewMatrix;
+    uniform mat4 u_ModelMatrix;    // Model matrix
+    uniform mat4 u_NormalMatrix;   // Transformation matrix of the normal
+    void main() {
+        gl_Position = u_ViewMatrix * a_Position;
+        a_Normal;
+    }`;
+    
     FSHADER_SOURCE = 
-    'precision mediump float;\n' +
+    `precision mediump float;
 
-    'uniform float u_Near;\n'+
-    'uniform float u_Far;\n'+
+    uniform float u_Near;
+    uniform float u_Far;
   
-    'void main(){\n' +         
-        'float depth = 1.0 - gl_FragCoord.z;\n' + // Invert so closer pixels are lighter
-        'gl_FragColor = vec4( vec3(depth), 1.0);\n' +
-    '}\n';
+    void main(){         
+        float depth = 1.0 - gl_FragCoord.z; // Invert so closer pixels are lighter
+        gl_FragColor = vec4( vec3(depth), 1.0);
+    }`;
 
 
     constructor(){

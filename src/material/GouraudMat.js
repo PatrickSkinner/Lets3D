@@ -7,99 +7,99 @@ import { createVector4 } from '../Core.js'
 
 export class GouraudMat extends Material{
     VSHADER_SOURCE=
-    '#define MAX_POINT_LIGHTS 64\n'+  
-    'precision mediump float;\n' +
-    'precision mediump int;\n' +
+    `#define MAX_POINT_LIGHTS 64  
+    precision mediump float;
+    precision mediump int;
 
-    'struct PointLight {\n' +   
-        'vec3 position;\n' +   
-        'vec3 diffuse;\n' +   
-        'vec3 specular;\n' +   
-    '};\n' +
+    struct PointLight {   
+        vec3 position;   
+        vec3 diffuse;   
+        vec3 specular;   
+    };
 
-    'struct DirectionalLight {\n' +  
-        'vec3 direction;\n'+ 
-        'vec3 position;\n' +   
-        'vec3 diffuse;\n' +   
-        'vec3 specular;\n' +   
-    '};\n' +
+    struct DirectionalLight {  
+        vec3 direction; 
+        vec3 position;   
+        vec3 diffuse;   
+        vec3 specular;   
+    };
 
-    'struct SpotLight {\n' +  
-        'vec3 direction;\n'+ 
-        'vec3 position;\n' +   
-        'vec3 diffuse;\n' +   
-        'vec3 specular;\n' +   
-        'float cutoff;\n'+
-    '};\n' +
+    struct SpotLight {  
+        vec3 direction; 
+        vec3 position;   
+        vec3 diffuse;   
+        vec3 specular;   
+        float cutoff;
+    };
 
-    'uniform PointLight pointLights[MAX_POINT_LIGHTS];\n'+
-    'uniform int u_numLights;\n'+
-    'uniform DirectionalLight dirLight;\n'+
-    'uniform SpotLight sptLight;\n'+
+    uniform PointLight pointLights[MAX_POINT_LIGHTS];
+    uniform int u_numLights;
+    uniform DirectionalLight dirLight;
+    uniform SpotLight sptLight;
 
-    'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Normal;\n' +
+    attribute vec4 a_Position;
+    attribute vec4 a_Normal;
 
-    'uniform mat4 u_ViewMatrix;\n' +
-    'uniform mat4 u_ModelMatrix;\n' +    // Model matrix
-    'uniform mat4 u_NormalMatrix;\n' +   // Transformation matrix of the normal
-    'uniform vec4 u_Color;\n' +   // Material Color
+    uniform mat4 u_ViewMatrix;
+    uniform mat4 u_ModelMatrix;    // Model matrix
+    uniform mat4 u_NormalMatrix;   // Transformation matrix of the normal
+    uniform vec4 u_Color;   // Material Color
 
-    'varying vec4 v_Color;\n' +
-    'varying vec3 v_Normal;\n' +
-    'varying vec3 v_Position;\n' +
-    'varying vec3 v_LightColor;\n' +     // Diffuse light color
+    varying vec4 v_Color;
+    varying vec3 v_Normal;
+    varying vec3 v_Position;
+    varying vec3 v_LightColor;     // Diffuse light color
 
-    'void CalcPointLight( PointLight light ){\n' +   
-        'vec3 lightDirection = normalize(light.position - v_Position);\n' + 
-        'float nDotL = max( dot(lightDirection, v_Normal), 0.0);\n' +
-        'v_LightColor += nDotL*light.diffuse;\n'+
-    '}\n' +   
+    void CalcPointLight( PointLight light ){   
+        vec3 lightDirection = normalize(light.position - v_Position); 
+        float nDotL = max( dot(lightDirection, v_Normal), 0.0);
+        v_LightColor += nDotL*light.diffuse;
+    }   
 
-    'void CalcDirectionalLight( DirectionalLight light ){\n' +   
-        'vec3 lightDirection = -normalize(light.direction);\n' + 
-        'float nDotL = max( dot(lightDirection, v_Normal), 0.0);\n' +
-        'v_LightColor += nDotL*light.diffuse;\n'+
-    '}\n' +   
+    void CalcDirectionalLight( DirectionalLight light ){   
+        vec3 lightDirection = -normalize(light.direction); 
+        float nDotL = max( dot(lightDirection, v_Normal), 0.0);
+        v_LightColor += nDotL*light.diffuse;
+    }   
 
-    'void CalcSpotLight( SpotLight light ){\n' +  
-        'vec3 lightDirection = normalize(light.position - v_Position);\n'+
-        'vec3 spotlightDirection = -normalize(light.direction);\n'+
-        'float theta = dot(lightDirection, spotlightDirection);\n'+
-        'if(theta > light.cutoff){\n'+
-            'float nDotL = max( dot(lightDirection, v_Normal), 0.0);\n' +
-            'v_LightColor += nDotL*light.diffuse;\n'+
-        '}\n'+
-    '}\n' +   
+    void CalcSpotLight( SpotLight light ){  
+        vec3 lightDirection = normalize(light.position - v_Position);
+        vec3 spotlightDirection = -normalize(light.direction);
+        float theta = dot(lightDirection, spotlightDirection);
+        if(theta > light.cutoff){
+            float nDotL = max( dot(lightDirection, v_Normal), 0.0);
+            v_LightColor += nDotL*light.diffuse;
+        }
+    }   
 
-    'void main() {\n'+
-        'gl_Position = u_ViewMatrix * a_Position;\n'+
-        'v_Position = vec3(u_ModelMatrix * a_Position);\n' + // Vertex position in world coords
-        'v_Normal = normalize(vec3(u_NormalMatrix * a_Normal));\n'+ // Normalise length to 1
-        'v_Color = u_Color;\n'+
+    void main() {
+        gl_Position = u_ViewMatrix * a_Position;
+        v_Position = vec3(u_ModelMatrix * a_Position); // Vertex position in world coords
+        v_Normal = normalize(vec3(u_NormalMatrix * a_Normal)); // Normalise length to 1
+        v_Color = u_Color;
 
-        'for(int i = 0; i < MAX_POINT_LIGHTS; i++){\n'+ // TODO: This should be u_numLights
-            'CalcPointLight(pointLights[i]);\n'+
-        '}\n'+
+        for(int i = 0; i < MAX_POINT_LIGHTS; i++){ // TODO: This should be u_numLights
+            CalcPointLight(pointLights[i]);
+        }
 
-        'CalcDirectionalLight(dirLight);\n'+
-        'CalcSpotLight(sptLight);\n'+
-    '}\n';
+        CalcDirectionalLight(dirLight);
+        CalcSpotLight(sptLight);
+    }`;
 
     FSHADER_SOURCE = 
-    'precision mediump float;\n' +
-    'uniform vec3 u_CameraPosition;\n' + // Position of the camera
-    'uniform vec3 u_AmbientLight;\n' +   // Ambient light color
+    `precision mediump float;
+    uniform vec3 u_CameraPosition; // Position of the camera
+    uniform vec3 u_AmbientLight;   // Ambient light color
 
-    'varying vec3 v_LightColor;\n' +     // Diffuse light color
-    'varying vec3 v_Normal;\n' +
-    'varying vec3 v_Position;\n' +
-    'varying vec4 v_Color;\n' +
+    varying vec3 v_LightColor;     // Diffuse light color
+    varying vec3 v_Normal;
+    varying vec3 v_Position;
+    varying vec4 v_Color;
 
-    'void main() {\n' +
-        'vec3 color = (u_AmbientLight*v_Color.rgb) + (v_LightColor * v_Color.rgb);\n'+
-        'gl_FragColor = vec4(color, v_Color.a);\n' +
-    '}\n';
+    void main() {
+        vec3 color = (u_AmbientLight*v_Color.rgb) + (v_LightColor * v_Color.rgb);
+        gl_FragColor = vec4(color, v_Color.a);
+    }`;
 
     constructor(colorR, colorG, colorB){
         super();

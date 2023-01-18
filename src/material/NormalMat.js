@@ -2,37 +2,37 @@ import { Material } from './Material.js';
 
 export class NormalMat extends Material{
     VSHADER_SOURCE=
-    'attribute vec4 a_Position;\n' +
-    'attribute vec4 a_Normal;\n' +
+    `attribute vec4 a_Position;
+    attribute vec4 a_Normal;
 
-    'uniform mat4 u_ViewMatrix;\n' +
-    'uniform mat4 u_ModelMatrix;\n' +    // Model matrix
-    'uniform mat4 u_NormalMatrix;\n' +   // Transformation matrix of the normal
+    uniform mat4 u_ViewMatrix;
+    uniform mat4 u_ModelMatrix;    // Model matrix
+    uniform mat4 u_NormalMatrix;   // Transformation matrix of the normal
 
-    'varying vec3 v_Normal;\n' +
+    varying vec3 v_Normal;
 
-    'void main() {\n'+
-        'gl_Position = u_ViewMatrix * a_Position;\n'+
-        'mat4 vnMat = u_ViewMatrix;\n'+
-        'vnMat[3][0] = 0.0;\n'+
-        'vnMat[3][1] = 0.0;\n'+
-        'vnMat[3][2] = 0.0;\n'+
-        'vec3 world_Normal = normalize(vec3( vnMat * a_Normal));\n'+ // Normalise length to 1
-        'v_Normal = world_Normal;\n'+
-    '}\n';
+    void main() {
+        gl_Position = u_ViewMatrix * a_Position;
+        mat4 vnMat = u_ViewMatrix;
+        vnMat[3][0] = 0.0;
+        vnMat[3][1] = 0.0;
+        vnMat[3][2] = 0.0;
+        vec3 world_Normal = normalize(vec3( vnMat * a_Normal)); // Normalise length to 1
+        v_Normal = world_Normal;
+    }`;
 
     FSHADER_SOURCE = 
-    'precision mediump float;\n' +
-    'varying vec3 v_Normal;\n' +
+    `precision mediump float;
+    varying vec3 v_Normal;
 
-    'void main() {\n' +
-        'vec3 normal = normalize(v_Normal);\n'+
+    void main() {
+        vec3 normal = normalize(v_Normal);
         // Convert normal components with range (-1, 1) to colors components with range (0, 1)
-        'float red = (1.0+normal.r)/2.0;\n'+
-        'float green = (1.0+normal.g)/2.0;\n'+
-        'float blue = (1.0+abs(normal.b))/2.0;\n'+
-        'gl_FragColor = vec4( red, green, blue, 1.0);\n' +
-    '}\n';
+        float red = (1.0+normal.r)/2.0;
+        float green = (1.0+normal.g)/2.0;
+        float blue = (1.0+abs(normal.b))/2.0;
+        gl_FragColor = vec4( red, green, blue, 1.0);
+    }`;
 
     constructor(){
         super();

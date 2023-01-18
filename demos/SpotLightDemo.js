@@ -38,7 +38,6 @@ function init(){
     sphere.translate(0, 0.5, 0);
     scene.add(sphere);
 
-    var bpMaterial2 = new L3D.BlinnPhongMat(1.0, 1.0, 1.0, 255);
     var planeGeometry = new L3D.Plane(10, 10);
     var plane = new L3D.MeshObject(planeGeometry, bpMaterial);
     scene.add(plane);

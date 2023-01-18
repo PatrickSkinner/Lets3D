@@ -48,17 +48,17 @@ export class Light extends Object3D{
         console.log("Initializing Light Helper");
 
         var VSHADER_SOURCE_NORMALS =
-            'attribute vec4 a_Position;\n' +
-            'uniform mat4 u_ViewMatrix;\n' +
-            'void main() {\n' +
-                'gl_Position = u_ViewMatrix * a_Position;\n'+
-            '}\n';
+            `attribute vec4 a_Position;
+            uniform mat4 u_ViewMatrix;
+            void main() {
+                gl_Position = u_ViewMatrix * a_Position;
+            }`;
 
         var FSHADER_SOURCE_NORMALS =
-            'precision mediump float;\n' +
-            'void main() {\n' +
-               ' gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);\n' +
-            '}\n';
+            `precision mediump float;
+            void main() {
+                gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);
+            }`;
 
         initShaders(gl, VSHADER_SOURCE_NORMALS, FSHADER_SOURCE_NORMALS );
         this.program = gl.program;
