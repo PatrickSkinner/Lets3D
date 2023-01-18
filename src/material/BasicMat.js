@@ -1,4 +1,5 @@
 import { Material } from './Material.js';
+import { createVector4 } from '../Core.js'
 
 export class BasicMat extends Material{
     VSHADER_SOURCE=
